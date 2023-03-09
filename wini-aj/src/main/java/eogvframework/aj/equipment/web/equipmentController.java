@@ -1,4 +1,4 @@
-package eogvframework.equipment.web;
+package eogvframework.aj.equipment.web;
 
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,6 @@ public class equipmentController {
 	@RequestMapping(value = "/equipTypeList.do")
 	public String equipTypeList() throws Exception {
 
-		return "sample/equipmain";
+		return "/menu/equipmain";
 	}
 }

@@ -15,8 +15,8 @@
 </head>
 
 <body>	
-	<div>아이디<input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id"></div>
-	<div>비밀번호<input autocomplete="one-time-code" type="text" id="password" name="password"></div>
+	<div>아이디 <input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id"></div>
+	<div>비밀번호 <input autocomplete="one-time-code" type="password" id="password" name="password"></div>
 	
 	<button type="submit" id="insert" onclick="mbrLogin()">로그인</button>
 	<button type="submit" id="back" onclick="location.href='/wini-aj/join.do'">회원가입</button>
@@ -27,20 +27,27 @@
 		var mbr_id = $("#mbr_id").val();
 		var password = $("#password").val();
 		
-		var login = {mbr_id : mbr_id
-			     , password : password}
-		
-		$.ajax({
-			type: 'POST',
-			url: "./mbrLogin.do",
-			data: login,
-			success: function(data){        
-				alert("통신 성공");            
-			}, 
-			error: function(){
-				alert("error"); // 요청 실패했을 때 실행할 함수
-			}
-		});
+		if(mbr_id.trim() == ''){
+			alert("아이디를 입력해주세요.");
+		}else if(password.trim() == ''){
+			alert("비밀번호를 입력해주세요.");
+		}else{
+			var login = {mbr_id : mbr_id
+				       , password : password}
+			
+			$.ajax({
+				type: 'POST',
+				url: "./mbrLogin.do",
+				data: login,
+				dataType: 'json',
+				success: function(result){        
+					location.href='/wini-aj/main.do'           
+				}, 
+				error: function(){
+					alert("아이디 또는 비밀번호를 확인해주세요.");
+				}
+			});
+		}
 	}
 	</script>
 </body>

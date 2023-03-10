@@ -26,12 +26,34 @@ public class EquipController {
 		return "/equip/equipList";
 	}
 	
+	@RequestMapping(value = "/equipType.do")
+	@ResponseBody 
+	public List equipType(@RequestParam Map<String, Object> equipMap) throws Exception {
+		
+		List typeResult = EquipService.list_map("EquipDAO.selectEquipType", equipMap);
+		
+		return typeResult;
+	}
+	
 	@RequestMapping(value = "/equipList.do")
 	@ResponseBody 
-	public List equipList(@RequestParam Map<String, Object> commandMap) throws Exception {
+	public List equipList(@RequestParam Map<String, Object> equipMap) throws Exception {
 		
-		List result = EquipService.list_map("EquipDAO.selectEquipType", commandMap);
+		List listResult = EquipService.list_map("EquipDAO.selectEquipList", equipMap);
 		
-		return result;
+		return listResult;
 	}
+	
+	@RequestMapping(value = "/addEquipType.do")
+	@ResponseBody 
+	public String addEquipType(@RequestParam Map<String, Object> equipMap) throws Exception {
+		
+		EquipService.insert("EquipDAO.insertEquipType", equipMap);
+
+		return null;
+	}
+	
+	
+	
+	
 }

@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>wini-aj</title>
 </head>
 <body>
-	<h1>로그인완료</h1>
 	<button onclick="location.href='equipmain.do'">장비관리</button>
+	<button onclick="">마이페이지</button>
 </body>
 </html>

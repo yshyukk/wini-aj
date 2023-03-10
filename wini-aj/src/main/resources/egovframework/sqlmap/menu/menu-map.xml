@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+
+<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+
+	<select id="menu.getMenuInfo" resultClass="egovMap">
+		SELECT LEVEL
+			,  MU_SEQ
+			,  MU_NM
+			,  MU_ORDER
+			,  MU_DESC
+			,  USE_YN
+			,  REG_DT
+			,  MOD_DT
+			,  MU_ROLE
+			,  MU_REF
+			,  MU_ID
+		FROM AJ_MENU
+		START WITH mu_ref IS NULL
+		CONNECT BY PRIOR mu_id = mu_ref
+		ORDER SIBLINGS BY MU_ORDER, MU_ID
+	</select>
+
+</sqlMap>

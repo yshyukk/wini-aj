@@ -9,19 +9,19 @@
 			SELECT mbr_sn <!-- 회원 번호 -->
 				 , mbr_id <!-- 아이디 -->
 				 , password <!-- 비밀번호 -->
-			FROM AJ_USER
+				 , mbr_type
+			FROM AJ_USER <!-- 회원 테이블 -->
 			WHERE mbr_id = #mbr_id#
 	</select>
 
 	<!-- 회원가입 -->
 	<insert id="user.mbrInsert" parameterClass="MbrVO">
-			INSERT INTO AJ_USER
+			INSERT INTO AJ_USER <!-- 회원 테이블 -->
 			(
 				mbr_sn <!-- 회원 번호 -->
 			  , mbr_id <!-- 아이디 -->
 			  , password <!-- 비밀번호 -->
 			  , mbr_nm <!-- 이름 -->
-			  , mbr_pos <!-- 직급 -->
 			  , mbr_gen <!-- 성별 -->
 			  , mbr_tel <!-- 전화번호 -->
 			  , mbr_email <!-- 이메일 -->
@@ -35,11 +35,10 @@
 			  , #mbr_id#
 			  , #password#
 			  , #mbr_nm#
-			  , #mbr_pos#
 			  , #mbr_gen#
 			  , #mbr_tel#
 			  , #mbr_email#
-			  , 0
+			  , 2 <!-- 일반 사용자로 등록 -->
 			  , 'Y'
 			  , sysdate				
 			)

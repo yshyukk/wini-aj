@@ -6,14 +6,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class MbrVO {
 
-	private int mbr_sn;
-	private String mbr_id;
-	private String password;
-	private String mbr_nm;
-	private String mbr_pos;
-	private String mbr_gen;
-	private String mbr_tel;
-	private String mbr_email;
+	private int mbr_sn; // 회원 번호
+	private String mbr_id; // 아이디
+	private String password; // 비밀번호
+	private String mbr_nm; // 이름
+	private String mbr_gen; // 성별
+	private String mbr_tel; // 번호
+	private String mbr_email; // 이메일
+	private int mbr_type; // 회원 구분
 	
 	public int getMbr_sn() {
 		return mbr_sn;
@@ -40,12 +40,6 @@ public class MbrVO {
 	public void setMbr_nm(String mbr_nm) {
 		this.mbr_nm = mbr_nm;
 	}
-	public String getMbr_pos() {
-		return mbr_pos;
-	}
-	public void setMbr_pos(String mbr_pos) {
-		this.mbr_pos = mbr_pos;
-	}
 	public String getMbr_gen() {
 		return mbr_gen;
 	}
@@ -64,4 +58,11 @@ public class MbrVO {
 	public void setMbr_email(String mbr_email) {
 		this.mbr_email = mbr_email;
 	}
+	public int getMbr_type() {
+		return mbr_type;
+	}
+	public void setMbr_type(int mbr_type) {
+		this.mbr_type = mbr_type;
+	}
+	
 }

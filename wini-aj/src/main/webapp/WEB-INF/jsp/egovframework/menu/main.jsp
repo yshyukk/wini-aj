@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>로그인페이지임다</h1>
+	<h1>로그인완료</h1>
 	<button onclick="location.href='equipmain.do'">장비관리</button>
 </body>
 </html>

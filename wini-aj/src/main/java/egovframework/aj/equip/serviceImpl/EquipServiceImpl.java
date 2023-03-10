@@ -23,5 +23,11 @@ public class EquipServiceImpl implements EquipService{
 		
         return result;
 	}
-
+	
+	@Override
+	public Map<String, Object> insert(String queryId, Map<String, Object> param) 
+			throws Exception {
+		EquipDAO.insert(queryId, param);
+		return null;
+	}
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="user">
+
+	<typeAlias alias="MbrVO" type="egovframework.user.vo.MbrVO" />
+	
+	<!-- 로그인 -->
+	<select id="user.mbrLogin" resultClass="MbrVO">
+			SELECT mbr_sn <!-- 회원 번호 -->
+				 , mbr_id <!-- 아이디 -->
+				 , password <!-- 비밀번호 -->
+			FROM AJ_USER
+			WHERE mbr_id = #mbr_id#
+	</select>
+
+	<!-- 회원가입 -->
+	<insert id="user.mbrInsert" parameterClass="MbrVO">
+			INSERT INTO AJ_USER
+			(
+				mbr_sn <!-- 회원 번호 -->
+			  , mbr_id <!-- 아이디 -->
+			  , password <!-- 비밀번호 -->
+			  , mbr_nm <!-- 이름 -->
+			  , mbr_pos <!-- 직급 -->
+			  , mbr_gen <!-- 성별 -->
+			  , mbr_tel <!-- 전화번호 -->
+			  , mbr_email <!-- 이메일 -->
+			  , mbr_type <!-- 회원 구분 -->
+			  , use_yn <!-- Y/N 사용여부 -->
+			  , rgtr_dt <!-- 등록일 -->
+			)
+			VALUES
+			(
+				(SELECT nvl(max(mbr_sn), 0) + 1 from AJ_USER)
+			  , #mbr_id#
+			  , #password#
+			  , #mbr_nm#
+			  , #mbr_pos#
+			  , #mbr_gen#
+			  , #mbr_tel#
+			  , #mbr_email#
+			  , 0
+			  , 'Y'
+			  , sysdate				
+			)
+	</insert>
+</sqlMap>

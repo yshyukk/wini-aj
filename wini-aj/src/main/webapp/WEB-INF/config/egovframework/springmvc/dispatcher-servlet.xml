@@ -12,53 +12,109 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
+								
+<!-- 								    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+								        <property name="webBindingInitializer">
+								            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
+								        </property>
+								    </bean>
+								    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+								        <property name="interceptors">
+								            <list>
+								                <ref bean="localeChangeInterceptor" />
+								            </list>
+								        </property>
+								    </bean>
+								    
+								    
+										    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+										    쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/>
+										    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+										        <property name="paramName" value="language" />
+										    </bean> -->
 
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="egovframework.example.cmmn.web.EgovBindingInitializer"/>
-        </property>
-    </bean>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
-        <property name="interceptors">
-            <list>
-                <ref bean="localeChangeInterceptor" />
-            </list>
-        </property>
-    </bean>
+										<!--     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+										        <property name="defaultErrorView" value="cmmn/egovError"/>
+										        <property name="exceptionMappings">
+										            <props>
+										                <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
+										                <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
+										                <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
+										                <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop>
+										            </props>
+										        </property>
+										    </bean>
+											 -->
+<!-- 	 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
+<!--         <property name="webBindingInitializer"> -->
+<!--             <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/> -->
+<!--         </property> -->
+<!--         <property name="customArgumentResolvers"> -->
+<!--             <list> -->
+<!--                 <bean class="egovframework.rte.ptl.mvc.bind.CommandMapArgumentResolver"/> -->
+<!--             </list> -->
+<!--         </property> -->
+<!--     </bean> -->
     
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
-    <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
-    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-        <property name="paramName" value="language" />
-    </bean>
-
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="defaultErrorView" value="cmmn/egovError"/>
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.springframework.dao.DataAccessException">cmmn/dataAccessFailure</prop>
-                <prop key="org.springframework.transaction.TransactionException">cmmn/transactionFailure</prop>
-                <prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">cmmn/egovError</prop>
-                <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop>
-            </props>
-        </property>
-    </bean>
-	
-	 <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
-        <property name="webBindingInitializer">
-            <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
-        </property>
-        <property name="customArgumentResolvers">
-            <list>
-                <bean class="egovframework.rte.ptl.mvc.bind.CommandMapArgumentResolver"/>
-            </list>
-        </property>
-    </bean>
+    <!-- 아래 설정을 하지 않으면 IE8,IE9에서 .json으로 다운로드 발생  -->
+<!--     <bean id="jsonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+              <list>
+                   <value>text/html;charset=UTF-8</value>
+                   <value>application/json;charset=UTF-8</value>
+              </list>
+         </property>
+    </bean> -->
     
+    <!-- 
+    Controller에서 화면(JSP) 입력값을 받기 위해서 일반적으로 Command(Form Class) 객체를 사용하지만,
+    Map 객체를 사용하는걸 선호할 수 있다.
+    org.springframework.web.bind.support.WebArgumentResolver의 구현클래스인 CommandMapArgumentResolver은
+    HTTP request 객체에 있는 파라미터이름과 값을 Map 객체에 담아 Controller에서 사용도록 제공한다.
+     -->
+<!-- 												    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+												        <property name="webBindingInitializer">
+												            <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
+												        </property>
+												        <property name="messageConverters">
+												            <list>
+												                <ref bean="jsonHttpMessageConverter" />
+												            </list>        
+												        </property>
+												        <property name="customArgumentResolvers">
+												         
+												                <bean class="egovframework.rte.ptl.mvc.bind.CommandMapArgumentResolver"/>
+												        
+												        </property>
+												    </bean>
+     -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"
 	    p:prefix="/WEB-INF/jsp/egovframework/" p:suffix=".jsp"/>
 
+<!--      <bean id="contentNegotiationManager"  class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="true" />
+        <property name="ignoreAcceptHeader" value="true"/>
+        <property name="useJaf" value="false"/>
+        <property name="defaultContentType" value="text/html" />
+
+        <property name="mediaTypes">
+            <map>
+        			<entry key="html" value="text/html" />
+					<entry key="xml" value="application/xml" />
+					<entry key="json" value="application/json;charset=UTF-8" />
+           </map>
+        </property>
+    </bean> -->
+   <!--  <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	    <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+	   <property name="order" value="1" />
+		<property name="defaultViews">
+	        <list>
+	            <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+	        </list>
+	    </property>
+	</bean> -->
     <!-- For Pagination Tag -->
     
     <!-- <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>
@@ -72,6 +128,7 @@
         </property>
     </bean> -->
 	<!-- /For Pagination Tag -->
-
+    <mvc:annotation-driven/>
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
+
 </beans>

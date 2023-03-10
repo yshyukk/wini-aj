@@ -3,4 +3,5 @@
 <sqlMapConfig>
 		<sqlMap resource="egovframework/sqlmap/yyjsql/yyjsql-map.xml"/>
 		<sqlMap resource="egovframework/sqlmap/user/mbr_SQL.xml"/>
+		<sqlMap resource="egovframework/sqlmap/menu/menu-map.xml"/>
 </sqlMapConfig>

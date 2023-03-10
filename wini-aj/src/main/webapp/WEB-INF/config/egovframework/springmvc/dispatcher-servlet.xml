@@ -60,9 +60,11 @@
 	    p:prefix="/WEB-INF/jsp/egovframework/" p:suffix=".jsp"/>
 
     <!-- For Pagination Tag -->
-<!--     <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>
- -->
-   <!--  <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+    
+    <!-- <bean id="imageRenderer" class="egovframework.example.cmmn.web.EgovImgPaginationRenderer"/>
+
+    <bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+
         <property name="rendererType">
             <map>
                 <entry key="image" value-ref="imageRenderer"/>

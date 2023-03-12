@@ -3,11 +3,12 @@
 <sqlMap>
 
 <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-
+	
+	<!-- 메뉴리스트 조회 -->
 	<select id="menu.getMenuInfo" resultClass="egovMap">
 		SELECT LEVEL
 			,  MU_SEQ
-			,  MU_NM
+			,  MU_NM 
 			,  MU_ORDER
 			,  MU_DESC
 			,  USE_YN
@@ -19,7 +20,24 @@
 		FROM AJ_MENU
 		START WITH mu_ref IS NULL
 		CONNECT BY PRIOR mu_id = mu_ref
-		ORDER SIBLINGS BY MU_ORDER, MU_ID
+		ORDER SIBLINGS BY MU_ORDER
 	</select>
-
+	<!-- 단건조회 -->
+	
+	<select id="menu.muDetailInfo" resultClass="egovMap">
+		SELECT MU_SEQ
+			,  MU_NM 
+			,  MU_ORDER
+			,  MU_DESC
+			,  USE_YN
+			,  REG_DT
+			,  MOD_DT
+			,  MU_ROLE
+			,  MU_REF
+			,  MU_ID
+		FROM AJ_MENU
+		WHERE MU_SEQ = #muSeq#
+		
+	</select>
+	
 </sqlMap>

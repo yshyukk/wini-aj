@@ -16,7 +16,9 @@ public class MenuServiceImpl implements MenuService{
 
 	@Resource(name="menuDAO")
 	MenuDAO mDAO;
-	
+	/* $
+	 * 
+	 */
 	@Override
 	public Map<String, Object> getMenuInfo(Map<String,Object> commandMap) {
 		List menuList = mDAO.list("menu.getMenuInfo");
@@ -26,6 +28,20 @@ public class MenuServiceImpl implements MenuService{
 		menuINfo.put("menuList", menuList);
 		
 		return menuINfo;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> muDetailInfo(Map<String, Object> commandMap) {
+		
+		Map<String, Object> respMap = (Map<String, Object>) mDAO.select("menu.muDetailInfo", commandMap);
+		return respMap;
+	}
+
+	@Override
+	public Map<String, Object> menuIUD(Map<String, Object> commandMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

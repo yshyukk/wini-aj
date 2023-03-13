@@ -139,7 +139,6 @@ public class MbrController {
 		
 		mbrService.mbrAuthorityUpdate(mbrVO);
 	}
-	
 	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 출력
 	@RequestMapping(value ="/mbrWaitList.do", method = RequestMethod.POST)
 	@ResponseBody

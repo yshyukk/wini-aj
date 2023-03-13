@@ -30,4 +30,16 @@ public class EquipServiceImpl implements EquipService{
 		EquipDAO.insert(queryId, param);
 		return null;
 	}
+	@Override
+	public Map<String, Object> delete(String queryId, Map<String, Object> param) 
+			throws Exception {
+		EquipDAO.delete(queryId, param);
+		return null;
+	}
+	@Override
+	public Map<String, Object> update(String queryId, Map<String, Object> param) 
+			throws Exception {
+		EquipDAO.update(queryId, param);
+		return null;
+	}
 }

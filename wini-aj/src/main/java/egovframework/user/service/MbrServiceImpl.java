@@ -1,5 +1,7 @@
 package egovframework.user.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -23,10 +25,9 @@ public class MbrServiceImpl implements MbrService{
 	public MbrVO mbrLogin(MbrVO mbrVO) throws Exception {
 		MbrVO vo = (MbrVO) mbrDAO.select("user.mbrLogin", mbrVO);
 		
-		// 비밀번호가 일치하면 vo 반환
+		// 비밀번호 확인
 		if(passwordEncoder.matches(mbrVO.getPassword(), vo.getPassword())) {
 			return vo;
-		// 비밀번호가 일치하지 않으면 null 반환
 		}else {
 			vo = null;
 			return vo;
@@ -42,5 +43,61 @@ public class MbrServiceImpl implements MbrService{
 		mbrVO.setPassword(encPassword);
 		
 		mbrDAO.insert("user.mbrInsert", mbrVO);
+	}
+
+	// 회원가입 - 아이디 중복체크
+	@Override
+	public int idCheck(MbrVO mbrVO) throws Exception {
+		int result = (int) mbrDAO.select("user.idCheck", mbrVO);
+		return result;
+	}
+
+	// 마이페이지 - 회원 조회
+	@Override
+	public MbrVO mbrPage(int mbr_sn) throws Exception {
+
+		return (MbrVO) mbrDAO.select("user.mbrPage", mbr_sn);
+	}
+	
+	// 마이페이지 - 회원 수정
+	@Override
+	public void mbrUpdate(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.mbrUpdate", mbrVO);
+	}
+	
+	// 마이페이지 - 회원 탈퇴
+	@Override
+	public void mbrDelete(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.mbrDelete", mbrVO);
+	}
+
+	// 사용자 권한 관리 페이지 - 회원 리스트
+	@Override
+	public List<MbrVO> mbrList(MbrVO mbrVO) throws Exception {
+		
+		List mbrList = mbrDAO.list("user.mbrList", mbrVO);
+		
+		return mbrList;
+	}
+
+	// 사용자 권한 관리 페이지 - 회원 권한 변경
+	@Override
+	public void mbrAuthorityUpdate(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.mbrAuthorityUpdate", mbrVO);	
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트
+	@Override
+	public List<MbrVO> mbrWaitList(MbrVO mbrVO) throws Exception {
+		
+		List mbrWaitList = mbrDAO.list("user.mbrWaitList", mbrVO);
+		
+		return mbrWaitList;
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 승인
+	@Override
+	public void mbrWait(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.mbrWait", mbrVO);	
 	}
 }

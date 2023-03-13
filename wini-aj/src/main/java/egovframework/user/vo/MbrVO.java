@@ -14,6 +14,7 @@ public class MbrVO {
 	private String mbr_tel; // 번호
 	private String mbr_email; // 이메일
 	private int mbr_type; // 회원 구분
+	private String use_yn; // Y/N 사용여부
 	
 	public int getMbr_sn() {
 		return mbr_sn;
@@ -27,8 +28,7 @@ public class MbrVO {
 	public void setMbr_id(String mbr_id) {
 		this.mbr_id = mbr_id;
 	}
-	public String getPassword() {
-		
+	public String getPassword() {	
 		return password;
 	}
 	public void setPassword(String password) {
@@ -64,5 +64,10 @@ public class MbrVO {
 	public void setMbr_type(int mbr_type) {
 		this.mbr_type = mbr_type;
 	}
-	
+	public String getUse_yn() {
+		return use_yn;
+	}
+	public void setUse_yn(String use_yn) {
+		this.use_yn = use_yn;
+	}
 }

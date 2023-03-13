@@ -15,7 +15,10 @@
 </head>
 
 <body>	
-	<div>아이디* <input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id"></div>
+	<div>아이디* 
+		<input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id">
+		<button type="submit" onclick="idCheck()">중복확인</button>
+	</div>
 	<div>비밀번호* <input autocomplete="one-time-code" type="password" id="password" name="password"> 비밀번호는 공백 없이 8~16자로 영문, 숫자, 특수문자를 포함해 주세요.</div>
 	<div>비밀번호 확인* <input autocomplete="one-time-code" type="password" id="confirm_password" name="password"></div>
 	<div>이름* <input autocomplete="one-time-code" type="text" id="mbr_nm" name="mbr_nm"></div>
@@ -31,14 +34,14 @@
 	<script>
 	/* 회원가입 */
 	function mbrJoin(){
-		var mbr_id = $("#mbr_id").val();
-		var password = $("#password").val();
-		var confirm_password = $("#confirm_password").val();
-		var mbr_nm = $("#mbr_nm").val();
-		var mbr_gen = $('input[name=mbr_gen]:checked').val();
-		var mbr_tel = $("#mbr_tel").val();
-		var mbr_email = $("#mbr_email").val();			
-		
+		var mbr_id = $("#mbr_id").val(); 							// 아이디
+		var password = $("#password").val(); 						// 비밀번호
+		var confirm_password = $("#confirm_password").val();		// 비밀번호 확인
+		var mbr_nm = $("#mbr_nm").val(); 							// 이름
+		var mbr_gen = $('input[name=mbr_gen]:checked').val(); 		// 성별
+		var mbr_tel = $("#mbr_tel").val(); 							// 전화번호
+		var mbr_email = $("#mbr_email").val(); 						// 이메일	
+			
 		if(mbr_id.trim() == ''){
    			alert("아이디를 입력해주세요.");
    		}else if(password.trim() == ''){
@@ -50,7 +53,7 @@
    		}else if(mbr_nm.trim() == ''){
    			alert("이름을 입력해주세요.");
    		}else {
-   			if (confirm("등록하시겠습니까?")) {
+   			if (confirm("회원가입을 신청하시겠습니까?")) {
 	 			var mbr = {mbr_id : mbr_id
 	 				     , password : password
 	 				     , mbr_nm : mbr_nm
@@ -59,11 +62,11 @@
 	 				     , mbr_email : mbr_email}
 	 			
 	 			$.ajax({
-	 				type:'POST', // HTTP 요청 메소드
-	 				url:"./mbrJoin.do", // URL
-	 				data: mbr, // 데이터 전달
+	 				type:'POST',
+	 				url:"./mbrJoin.do",
+	 				data: mbr,
 	 				success : function(data) {
-	 					alert("등록 완료");
+	 					alert("신청 완료");
 	 					location.href='/wini-aj'  
 	 				},
 	 				error: function(){
@@ -72,6 +75,28 @@
 	 			});
    			}
    		}
+	}
+	
+	/* 아이디 중복체크 */
+	function idCheck() {
+		var mbr_id = $("#mbr_id").val();	// 아이디
+		
+		$.ajax({
+			url: "./idCheck.do",
+			type: 'post',
+			data: {'mbr_id' : mbr_id},
+			dataType: 'json',
+			success: function(result){
+	            if(result == 1){
+	            	alert("중복된 아이디입니다.")
+	            } else {
+	            	alert("사용 가능한 아이디입니다.")
+	            }          
+			}, 
+			error: function(){
+				alert("error");
+			}
+		});
 	}
 	
 	/* 비밀번호 형식(공백 없이 영문, 숫자, 특수문자 포함 8~13자) */

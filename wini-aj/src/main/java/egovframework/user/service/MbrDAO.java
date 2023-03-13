@@ -7,5 +7,5 @@ import egovframework.user.vo.MbrVO;
 
 @Repository("MbrDAO")
 public class MbrDAO extends EgovAbstractDAO  {
-
+	
 }

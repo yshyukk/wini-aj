@@ -24,8 +24,8 @@
 	<script>
 	function mbrLogin() {	
 		
-		var mbr_id = $("#mbr_id").val();
-		var password = $("#password").val();
+		var mbr_id = $("#mbr_id").val();			// 아이디
+		var password = $("#password").val();		// 비밀번호
 		
 		if(mbr_id.trim() == ''){
 			alert("아이디를 입력해주세요.");
@@ -40,8 +40,19 @@
 				url: "./mbrLogin.do",
 				data: login,
 				dataType: 'json',
-				success: function(result){        
-					location.href='/wini-aj/main.do'           
+				success: function(result){
+					// 회원가입 승인 확인
+					if(result.mbr_type == 3){
+						alert("회원가입 승인 대기중입니다.")
+						location.href='/wini-aj/login.do';
+					}else if(result.use_yn == "N"){
+						alert("탈퇴한 회원입니다.")
+						location.href='/wini-aj/login.do';
+					}
+					else{
+						location.href='/wini-aj/main.do';
+					}
+	           
 				}, 
 				error: function(){
 					alert("아이디 또는 비밀번호를 확인해주세요.");

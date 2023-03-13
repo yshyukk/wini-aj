@@ -1,5 +1,7 @@
 package egovframework.user.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,14 +33,23 @@ public class MbrController {
 	@ResponseBody
 	public MbrVO mbrLogin(MbrVO mbrVO, HttpSession session) throws Exception {
 		
-		int mbr_sn = mbrService.mbrLogin(mbrVO).getMbr_sn(); // 로그인 된 회원 번호
-		int mbr_type = mbrService.mbrLogin(mbrVO).getMbr_type(); // 로그인 된 회원 구분
+		int mbr_sn = mbrService.mbrLogin(mbrVO).getMbr_sn(); // 세션에 저장되어 있는 회원 번호
+		int mbr_type = mbrService.mbrLogin(mbrVO).getMbr_type(); // 세션에 저장되어 있는 회원 구분
 		
 		// 세션에 회원 번호, 회원 구분 저장
 		session.setAttribute("mbr_sn", mbr_sn);
 		session.setAttribute("mbr_type", mbr_type);
 
 		return mbrService.mbrLogin(mbrVO); 
+	}
+	
+	// 로그아웃
+	@RequestMapping(value = "/mbrLogout.do")
+	public String mbrLogout(HttpSession session) throws Exception {
+		
+		session.invalidate(); // 세션 전체 초기화
+
+		return "user/MbrLogin"; 
 	}
 	
 	// 회원가입 페이지
@@ -54,5 +65,97 @@ public class MbrController {
 	public void mbrInsert(MbrVO mbrVO) throws Exception {
 		
 		mbrService.mbrInsert(mbrVO);
+	}
+	
+	// 회원가입 - 아이디 중복체크
+	@RequestMapping(value = "/idCheck.do", method = RequestMethod.POST)
+	@ResponseBody
+	public int idCheck(MbrVO mbrVO) throws Exception {
+		
+		return mbrService.idCheck(mbrVO);
+	}
+	
+	// 마이페이지
+	@RequestMapping(value = "/myPage.do") 
+	public String myPage() throws Exception {
+
+		return "user/MbrPage"; 
+	}
+	
+	// 마이페이지 - 회원 조회
+	@RequestMapping(value = "/mbrPage.do", method = RequestMethod.POST)
+	@ResponseBody
+	public MbrVO mbrPage(MbrVO mbrVO, HttpSession session) throws Exception {
+		
+		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
+
+		return mbrService.mbrPage(mbr_sn); 
+	}
+	
+	// 마이페이지 - 회원 수정
+	@RequestMapping(value = "/mbrUpdate.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void mbrUpdate(MbrVO mbrVO, HttpSession session) throws Exception {
+
+		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
+		mbrVO.setMbr_sn(mbr_sn);
+		
+		mbrService.mbrUpdate(mbrVO);
+	}
+	
+	// 마이페이지 - 회원 탈퇴
+	@RequestMapping(value = "/mbrDelete.do")
+	public String mbrDelete(MbrVO mbrVO, HttpSession session) throws Exception {
+
+		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
+		mbrVO.setMbr_sn(mbr_sn);
+		
+		mbrService.mbrDelete(mbrVO);
+		
+		return "user/MbrLogin";
+	}
+	
+	// 사용자 권한 관리 페이지
+	@RequestMapping(value = "/mbrAuthority.do") 
+	public String mbrAuthority() throws Exception {
+
+		return "user/MbrAuthority"; 
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원 리스트 출력
+	@RequestMapping(value ="/mbrList.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<MbrVO> mbrList(MbrVO mbrVO) throws Exception {
+	
+		return mbrService.mbrList(mbrVO); 
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원 수정
+	@RequestMapping(value = "/mbrAuthorityUpdate.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void mbrAuthorityUpdate(MbrVO mbrVO, HttpSession session) throws Exception {
+
+		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
+		
+		mbrService.mbrAuthorityUpdate(mbrVO);
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 출력
+	@RequestMapping(value ="/mbrWaitList.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<MbrVO> mbrWaitList(MbrVO mbrVO) throws Exception {
+	
+		return mbrService.mbrWaitList(mbrVO); 
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 승인
+	@RequestMapping(value = "/mbrWait.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void mbrWait(MbrVO mbrVO, HttpSession session) throws Exception {
+
+		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
+		int mbr_type = (int) session.getAttribute("mbr_type"); // 세션에 저장되어 있는 회원 구분
+		
+		mbrService.mbrWait(mbrVO);
 	}
 }

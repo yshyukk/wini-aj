@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +26,9 @@
 </style>
 </head>
 <body>
+
+<c:import url="../menu/menuNav.jsp"></c:import>
+
 	<h1>장비목록 페이지</h1>
 	<div id="eqpType"></div>
 	<div id="eqpList"></div>

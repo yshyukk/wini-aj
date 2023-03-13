@@ -44,10 +44,12 @@ public class MenuController {
 		
 		return result;	
 	}
-	
+	/*
+	 * @ 메뉴 IUD 
+	 */
 	@RequestMapping("menuIUD.do")
 	@ResponseBody
-	public Map<String,Object> menuIUD(Map<String,Object> commandMap) {		
+	public Map<String,Object> menuIUD(@RequestParam Map<String,Object> commandMap) {		
 		
 		Map<String,Object> result = mService.menuIUD(commandMap);
 		

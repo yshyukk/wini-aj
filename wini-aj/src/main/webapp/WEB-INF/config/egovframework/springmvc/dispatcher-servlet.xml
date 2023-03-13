@@ -88,9 +88,9 @@
 												        </property>
 												    </bean>
      -->
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+   <!-- <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"
-	    p:prefix="/WEB-INF/jsp/egovframework/" p:suffix=".jsp"/>
+	    p:prefix="/WEB-INF/jsp/egovframework/" p:suffix=".jsp"/> -->
 
 <!--      <bean id="contentNegotiationManager"  class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="favorPathExtension" value="true" />
@@ -128,7 +128,73 @@
         </property>
     </bean> -->
 	<!-- /For Pagination Tag -->
+	
+	<!-- Tiles 설정 -->
+	<bean id="tilesViewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+		<property name="order" value="1" />
+	</bean>
+	
+	<!-- Tiles Configurer -->
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:order="2"
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/WEB-INF/jsp/egovframework/" p:suffix=".jsp" />
+		
+		
     <mvc:annotation-driven/>
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
+	<!-- END -->
+	
+	
+	<!-- INTERCEPTOR -->
+		<!-- 인터셉터 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" p:order="2">
+	    <property name="interceptors">
+	        <list>
+	            <ref bean="localeChangeInterceptor" />	             
+	        </list>
+	    </property>
+	</bean>
+	
 
+	<mvc:interceptors>
+	
+		<mvc:interceptor>
+			<mvc:mapping path="/"/>
+			<mvc:mapping path="/**/*.do"/>
+			<mvc:exclude-mapping path="/login.do"/> 
+			<bean class="egovframework.aj.common.interceptor.MenuInterceptor"/>
+		</mvc:interceptor>
+		
+	<!-- 	<mvc:interceptor>
+			<mvc:mapping path="/"/>
+			<mvc:mapping path="/**/*List.do"/>
+			<mvc:exclude-mapping path="/mainPage.do"/> 
+			<bean class="egovframework.aj.common.interceptor.RoleInterceptor"/>
+		</mvc:interceptor> -->
+		
+	</mvc:interceptors>
+	
+	
+	<bean id="menuInterceptor" class="egovframework.aj.common.interceptor.MenuInterceptor"/>
+	<!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
+	<bean id="localeChangeInterceptor"
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="language" />
+	</bean>
+	
+	
 </beans>

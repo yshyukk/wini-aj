@@ -25,12 +25,13 @@ public class MenuController {
 	
 	@RequestMapping(value = "/menuList.do")
 	public String menuList() {
-		return "/menu/menuList";
+		return "menu/menuList.tiles";
 	}
 	
 	@RequestMapping(value="/menuInfo.do")
 	@ResponseBody
-	public Map<String,Object> menuInfo(Map<String,Object> commandMap) {
+	public Map<String,Object> menuInfo(@RequestParam Map<String,Object> commandMap) {
+		System.out.println(commandMap);
 		Map<String,Object> menuInfo = mService.getMenuInfo(commandMap);
 		return menuInfo;
 	}

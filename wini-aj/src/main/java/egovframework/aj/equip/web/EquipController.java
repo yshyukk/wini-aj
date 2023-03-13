@@ -28,7 +28,7 @@ public class EquipController {
 //	장비 점검 관리 페이지 이동
 	@RequestMapping(value = "/equipMgrmain.do")
 	public String equipMgrmain() {
-		return "/equip/equipListMgr";
+		return "/equip/equipListMgr.tiles";
 	}
 	
 /**

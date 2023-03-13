@@ -6,16 +6,20 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
+<style>
+ 	#nav_container{display:flex; background-color:#93DAFF; width:fit-content;} 
+	.nav_li{list-style-type:none; width:200px; cursor:pointer};
+	.nav_li>a:hover{background-color:red;}
+	
+	
+</style>
 </head>
 <body>
 	<div id="nav-wrap" style="width:30%;">
 	</div>
 
 </body>
-<style>
-	#nav_container{display:flex};
-</style>
+
 <script>
 
 $(function(){
@@ -37,7 +41,6 @@ function navGrid(){
 function menuNavAjax_result_fn(menuInfo){
 	var menuList = menuInfo.menuList;
 	
-	//var appendTag = '<ul id="menuWrap_ul">';		
 	var appendTag = '<div id="nav_container">';		
 	for(var i=0; i < menuList.length; i++){
 		console.log("!!!", menuList[i].muUrl)
@@ -48,12 +51,9 @@ function menuNavAjax_result_fn(menuInfo){
 			if(menuList[i].level == menuList[i-1].level){ // 이전 레벨과 같은 레벨이면
 				appendTag += '<li class="nav_li" onclick="move_page('+ menuList[i].muUrl +')">'+ menuList[i].muNm+'</li>';
 			}else if(menuList[i].level < menuList[i-1].level){ //이전 레벨보다 작으면(부모)
-				appendTag += '<ul><li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm +'"</li>';
+				appendTag += '<ul class="nav_ul"><li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm +'"</li>';
 			}else if(menuList[i].level > menuList[i-1].level){ // 이전 레벨보다 크면(자식)
-				//레벨 별로 태그를 닫아야 하기 때문에 
-				/* for(var j=1; j<=menuList[i].level; j++){
-					appendTag += '</ul>'
-				}  */
+			
 				
 				appendTag += '<li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm+'</li>';
 			}
@@ -66,9 +66,9 @@ function menuNavAjax_result_fn(menuInfo){
 		// 다음에 올 값과 비교해서 그리기
 		if(menuList[i].level == 1){
 			//레벨을 시작할 때 <ul>태그 시작
-			appendTag += '<ul><li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm+'</li>';
+			appendTag += '<ul  class="nav_ul"><li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm+'</li>';
 			if(menuList[i+1].level > 1){
-				appendTag += '<ul>';
+				appendTag += '<ul  class="nav_ul">';
 			}
 		}else if(menuList[i].level > menuList[i+1].level){ //다음에 올 애가 부모면
 			appendTag += '<li class="nav_li" onclick="move_page('+menuList[i].muUrl +')">'+menuList[i].muNm+'</li>';
@@ -98,7 +98,6 @@ function menuNavAjax_result_fn(menuInfo){
 
 $(document).on("click",".nav_li",function(){
 	let target = $(this).parent();
-// 	console.log(target)
 	let targetP = target.parent();
 	let hideTarget = target.find('ul');
 	
@@ -108,12 +107,8 @@ $(document).on("click",".nav_li",function(){
 
 function move_page(url){
 	var test = "'";
-// 	if(url == null){
-// 		alert("주소없음");		
-// 	}else{
 		
-		location.href =  url;
-	
+	location.href =  url;
 }
 
 

@@ -37,8 +37,6 @@
 </head>
 <body>
 
-<c:import url="../menu/menuNav.jsp"></c:import>
-
 	<h1>장비목록 페이지</h1>
 	<div id="tables">
 		<div id="eqpType"></div>

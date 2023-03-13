@@ -8,6 +8,7 @@
 </head>
 <body>
 	<button onclick="location.href='equipmain.do'">장비관리</button>
+	<button onclick="location.href='equipMgrmain.do'">장비점검관리</button>
 	<button onclick="">마이페이지</button>
 </body>
 </html>

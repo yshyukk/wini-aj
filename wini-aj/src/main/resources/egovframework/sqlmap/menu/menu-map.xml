@@ -3,11 +3,12 @@
 <sqlMap>
 
 <typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
-
+	
+	<!-- 메뉴리스트 조회 -->
 	<select id="menu.getMenuInfo" resultClass="egovMap">
 		SELECT LEVEL
 			,  MU_SEQ
-			,  MU_NM
+			,  MU_NM 
 			,  MU_ORDER
 			,  MU_DESC
 			,  USE_YN
@@ -15,11 +16,109 @@
 			,  MOD_DT
 			,  MU_ROLE
 			,  MU_REF
-			,  MU_ID
+			,  MU_URL
 		FROM AJ_MENU
 		START WITH mu_ref IS NULL
-		CONNECT BY PRIOR mu_id = mu_ref
-		ORDER SIBLINGS BY MU_ORDER, MU_ID
+		CONNECT BY PRIOR mu_nm = mu_ref
+		ORDER SIBLINGS BY MU_ORDER
 	</select>
-
+	
+	
+	<!-- 단건조회 -->
+	
+	<select id="menu.muDetailInfo" resultClass="egovMap">
+		SELECT LEVEL
+			,  MU_SEQ
+			,  MU_NM 
+			,  MU_ORDER
+			,  MU_DESC
+			,  USE_YN
+			,  REG_DT
+			,  MOD_DT
+			,  MU_ROLE
+			,  MU_REF
+			,  MU_URL
+		FROM AJ_MENU
+		WHERE MU_SEQ = #muSeq#
+		START WITH mu_ref IS NULL
+		CONNECT BY PRIOR mu_nm = mu_ref
+		ORDER SIBLINGS BY MU_ORDER
+		
+	</select>
+	
+	<!-- 메뉴이름 중복체크 -->
+	
+	<select id="menu.checkInsMenu" resultClass="int">
+		SELECT COUNT(1)
+		FROM AJ_MENU
+		WHERE MU_NM = #muNm#
+	</select>
+	
+	
+	<!-- 메뉴 INSERT -->
+	<insert id="menu.insMenuInfo">
+		INSERT 
+		INTO  AJ_MENU
+			  (
+			 	MU_SEQ
+			 ,  MU_NM 
+		 	 ,  MU_ORDER
+			 ,  MU_DESC
+			 ,  USE_YN
+			 ,  REG_DT
+			 ,  MU_ROLE
+			 ,  MU_REF
+			 ,  MU_URL
+			 )
+			 VALUES
+			 (
+			    aj_mu_seq.NEXTVAL
+			  , #muNm#
+			  , #muOrder#
+			  , #muDesc#
+			  , #useYn#
+			  , SYSDATE
+			  , #muRole#
+			  , #muRef#
+			  , #muUrl#
+			 )
+	</insert>
+	
+	<!-- 메뉴 UPDATE -->
+	
+	<update id="menu.updMenuInfo">
+		UPDATE AJ_MENU
+		SET MU_NM = #muNm#
+		  , MU_ORDER = #muOrder#
+		  , MU_DESC = #muDesc#
+		  , USE_YN = #useYn#
+		  , MOD_DT = SYSDATE
+		  , MU_ROLE = #muRole#
+		  , MU_REF = #muRef#
+		  , MU_URL = #muUrl#
+		WHERE MU_SEQ = #muSeq#
+	</update>
+	
+	<select id="menu.checkChildMenu" resultClass="int">
+		SELECT COUNT(1)
+		FROM AJ_MENU
+		WHERE MU_REF = #muNm#
+	</select>
+	
+	<select id="menu.levelCheck">
+		SELECT LEVEL
+		FROM AJ_MENU
+		WHERE MU_NM = #muRef#
+		START WITH MU_REF IS NULL
+		CONNECT BY PRIOR MU_NM = MU_REF
+		
+	</select>
+	
+	<!-- 메뉴 DELETE -->
+	
+	<delete id="menu.delMenuInfo">
+		DELETE AJ_MENU
+		WHERE MU_SEQ = #muSeq#
+	</delete>
+	
 </sqlMap>

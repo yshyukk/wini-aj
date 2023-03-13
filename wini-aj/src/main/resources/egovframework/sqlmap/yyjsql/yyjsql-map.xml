@@ -6,6 +6,8 @@
 
 <typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
 	
+<!-- ###### 장비종류 관련 쿼리문 ######  -->
+	
 	<!-- 장비 종류 조회 -->
 	<select id="EquipDAO.selectEquipType" resultClass="egovMap">
 		SELECT 
@@ -14,18 +16,6 @@
 			, TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt			<!-- 장비 종류 등록일 -->
 		FROM AJ_EQUIP_TYPE
 		ORDER BY eqp_code ASC
-	</select>
-	
-	<!-- 장비 목록 조회 -->
-	<select id="EquipDAO.selectEquipList" resultClass="egovMap">
-		SELECT 
-			eqp_sn				<!-- 번호 -->
-			, eqp_nm			<!-- 장비명 -->
-			, eqp_no			<!--장비 S/N  -->
-			, dst_yn			<!-- 배부여부 -->
-			, repair_yn			<!-- 수리여부 -->
-		FROM AJ_EQUIP
-		WHERE eqp_code = #typeNum#
 	</select>
 	
 	<!-- 장비 종류 등록 -->
@@ -43,6 +33,110 @@
 			, SYSDATE
 		)
 	</insert>
+	
+	<!-- 장비 종류 삭제 -->
+	<delete id="EquipDAO.deleteEquipType">
+		DELETE FROM AJ_EQUIP_TYPE
+		WHERE EQP_CODE = #typeNum#
+	</delete>
+	
+
+<!-- ###### 장비관련 쿼리문 ###### -->
+
+
+	<!-- 장비 목록 조회 -->
+	<select id="EquipDAO.selectEquipList" resultClass="egovMap">
+		SELECT 
+				eqp_code									<!-- 장비 종류 코드 -->	
+			, eqp_sn										<!-- 장비 번호 -->
+			, eqp_nm										<!-- 장비 이름 -->
+			, eqp_no										<!-- 장비 시리얼 번호 -->
+			, reg_nm										<!-- 등록자 -->
+			, TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt		<!-- 등록일 -->
+			, TO_CHAR(buy_dt, 'YYYY-MM-DD') AS buy_dt		<!-- 구입일 -->
+			, buy_price										<!-- 구일 가격 -->
+			, dst_yn										<!-- 배부(사용)여부-->
+			, where_use										<!-- 사용장소 -->
+			, repair_yn										<!--수리여부 -->
+		FROM AJ_EQUIP
+		WHERE eqp_code = #typeNum#
+		ORDER BY eqp_sn ASC
+</select>
+	
+	<!-- 장비 추가 -->
+	<insert id="EquipDAO.insertEquip">
+		INSERT INTO AJ_EQUIP
+			(
+				eqp_code			<!-- 장비 종류 코드 -->	
+				, eqp_sn			<!-- 장비 번호 -->
+				, eqp_nm			<!-- 장비 이름 -->
+				, eqp_no			<!-- 장비 시리얼 번호 -->
+				, reg_nm			<!-- 등록자 -->
+				, reg_dt			<!-- 등록일 -->
+				, dst_yn			<!-- 배부(사용)여부 -->
+				, where_use			<!-- 사용장소 -->
+				, repair_yn			<!--수리여부 -->
+			)
+		VALUES
+			(
+				#typeNum#
+				, (SELECT NVL(MAX(eqp_sn) , 0) + 1 FROM AJ_EQUIP)
+				, #addEquipNm#
+				, #addEquipNo#
+				, #addEquipRegNm#
+				, SYSDATE
+				, #dstYn#
+				, #addEquipWhere#
+				, 'N'
+			)
+	</insert>
+	<update id="EquipDAO.updateEquipType">
+		UPDATE AJ_EQUIP_TYPE 
+		SET
+		eqp_type = #typeName#
+		WHERE eqp_code = #typeNum#
+	</update>
+<select id="EquipDAO.selectEquipDetail" resultClass="egovMap">
+		SELECT 
+				eqp_code									<!-- 장비 종류 코드 -->	
+			, eqp_sn										<!-- 장비 번호 -->
+			, eqp_nm										<!-- 장비 이름 -->
+			, eqp_no										<!-- 장비 시리얼 번호 -->
+			, reg_nm										<!-- 등록자 -->
+			, TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt		<!-- 등록일 -->
+			, TO_CHAR(mod_dt, 'YYYY-MM-DD') AS mod_dt		<!-- 수정일 -->
+			, TO_CHAR(buy_dt, 'YYYY-MM-DD') AS buy_dt		<!-- 구입일 -->
+			, buy_price										<!-- 구일 가격 -->
+			, dst_yn										<!-- 배부(사용)여부-->
+			, where_use										<!-- 사용장소 -->
+			, repair_yn										<!--수리여부 -->
+			, TO_CHAR(repair_dt, 'YYYY-MM-DD') AS repair_dt	<!--수리입고일 -->
+			, repair_com_dt									<!--수리완료일 -->
+		FROM AJ_EQUIP
+		WHERE eqp_sn = #equipNum#
+
+	</select>
+	<update id="EquipDAO.updateEquip">
+		UPDATE AJ_EQUIPㅇ
+			SET
+				eqp_code = #eqpCode#
+				, eqp_nm = #eqpNm#
+				, eqp_no = #eqpNo#
+				, reg_nm = #regNm#
+				, buy_dt = #buyDt#
+				, buy_price = #buyPrice#
+				, dst_yn = #dstYn#
+				, where_use = #whereUse#
+				, repair_yn = #repairYn#
+				, repair_dt = #repairDt#
+				, repair_com_dt = #repairComDt#
+				, mod_dt = SYSDATE
+			WHERE eqp_sn = #equipNum#
+	</update>
+	<delete id="EquipDAO.deleteEquip">
+		DELETE FROM AJ_EQUIP
+		WHERE eqp_sn = #equipNum#
+	</delete>
 </sqlMap>
 
 

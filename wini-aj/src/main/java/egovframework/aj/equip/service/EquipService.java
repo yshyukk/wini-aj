@@ -10,4 +10,9 @@ public interface EquipService {
 	//insert
 	Map<String, Object> insert(String queryId, Map<String, Object> param) throws Exception;
 
+	//delete
+	Map<String, Object> delete(String queryId, Map<String, Object> param) throws Exception;
+	
+	//update
+	Map<String, Object> update(String queryId, Map<String, Object> param) throws Exception;
 }

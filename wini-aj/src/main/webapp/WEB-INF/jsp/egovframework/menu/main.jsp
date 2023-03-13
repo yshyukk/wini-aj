@@ -10,6 +10,7 @@
 </head>
 <body>
 	<button onclick="location.href='equipmain.do'">장비관리</button>
+	<button onclick="location.href='equipMgrmain.do'">장비점검관리</button>
 	<button id="user" onclick="location.href='mbrAuthority.do'">사용자 권한 관리</button>
 	<button onclick="location.href='myPage.do'">마이페이지</button>
 	<button onclick="location.href='mbrLogout.do'">로그아웃</button>

@@ -30,6 +30,11 @@ public class EquipController {
 	public String equipMgrmain() {
 		return "/equip/equipListMgr";
 	}
+//	장비 사용현황 통계 페이지 이동
+	@RequestMapping(value = "/equipStatics.do")
+	public String equipStatics() {
+		return "/equip/equipStatics";
+	}
 	
 /**
  * 장비 종류(타입)에 관련된 컨트롤러
@@ -124,5 +129,16 @@ public class EquipController {
 		EquipService.delete("EquipDAO.deleteEquip", equipMap);
 
 		return null;
+	}
+
+//	장비 현황 통계
+	// 장비 현환 통께 테이블
+	@RequestMapping(value = "/equipStc.do")
+	@ResponseBody 
+	public List equipStc(@RequestParam Map<String, Object> equipMap) throws Exception {
+		
+		List stcResult = EquipService.list_map("EquipDAO.selectEquipStc", equipMap);
+		
+		return stcResult;
 	}
 }

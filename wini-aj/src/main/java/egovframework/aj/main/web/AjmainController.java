@@ -19,6 +19,6 @@ public class AjmainController {
 		int mbr_type = (int) session.getAttribute("mbr_type");
 //		session.setMaxInactiveInterval(10);
 	
-		return "/menu/main";
+		return "menu/main.tiles";
 	}
 }

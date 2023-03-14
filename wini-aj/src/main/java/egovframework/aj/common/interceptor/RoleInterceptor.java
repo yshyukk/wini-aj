@@ -9,13 +9,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
+
+import egovframework.aj.menu.service.MenuService;
 
 /*
  * @pre : controller에 가기 전 request를 가로채 처리
  * @request에서 메뉴권한과 user권한을 비교해서 권한이 없으면 권한처리하는 요청으로 sendRedirect
  */
 public class RoleInterceptor extends WebContentInterceptor{
+	
+	/*
+	 * @Autowired MenuService mService;
+	 * 
+	 * @Override public boolean preHandle(HttpServletRequest request,
+	 * HttpServletResponse response, Object handler) throws ServletException {
+	 * System.out.println("preRun");
+	 * 
+	 * try { request.setCharacterEncoding("UTF-8"); } catch
+	 * (UnsupportedEncodingException e) { e.printStackTrace(); }
+	 * 
+	 * HttpSession session = request.getSession();
+	 * 
+	 * int userRole = (int) session.getAttribute("mbr_type");
+	 * 
+	 * if(userRole < 3) { System.out.println("run"); return true; }else { try {
+	 * response.sendRedirect("/main.do"); } catch (IOException e) {
+	 * e.printStackTrace(); } return false;
+	 * 
+	 * } }
+	 */
 //	@Autowired
 //	UserService userService;
 //	

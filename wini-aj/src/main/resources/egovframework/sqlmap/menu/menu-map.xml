@@ -8,7 +8,7 @@
 	<select id="menu.getMenuInfo" resultClass="egovMap">
 		SELECT LEVEL
 			,  MU_SEQ
-			,  MU_NM 
+			,  MU_NM
 			,  MU_ORDER
 			,  MU_DESC
 			,  USE_YN
@@ -18,9 +18,7 @@
 			,  MU_REF
 			,  MU_URL
 		FROM AJ_MENU
-		<isNotNull property="type">
-			WHERE USE_YN = "Y"
-		</isNotNull>
+		WHERE MU_ROLE <![CDATA[>=]]> #userRole#
 		START WITH mu_ref IS NULL
 		CONNECT BY PRIOR mu_nm = mu_ref
 		ORDER SIBLINGS BY MU_ORDER

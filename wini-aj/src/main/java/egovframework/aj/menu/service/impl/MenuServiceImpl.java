@@ -1,11 +1,12 @@
 package egovframework.aj.menu.service.impl;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,15 @@ public class MenuServiceImpl implements MenuService{
 	 */
 	@Override
 	public Map<String, Object> getMenuInfo(Map<String,Object> commandMap) {
-		List menuList = mDAO.list("menu.getMenuInfo");
 		
-		HashMap<String, Object> menuINfo = new HashMap<>();
 		
-		menuINfo.put("menuList", menuList);
+		List menuList = mDAO.list("menu.getMenuInfo", commandMap);
 		
-		return menuINfo;
+		HashMap<String, Object> menuInfo = new HashMap<>();
+		
+		menuInfo.put("menuList", menuList);
+		
+		return menuInfo;
 	}
 	
 	@SuppressWarnings("unchecked")

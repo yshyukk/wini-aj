@@ -39,7 +39,7 @@ public class MbrController {
 		// 세션에 회원 번호, 회원 구분 저장
 		session.setAttribute("mbr_sn", mbr_sn);
 		session.setAttribute("mbr_type", mbr_type);
-
+		
 		return mbrService.mbrLogin(mbrVO); 
 	}
 	

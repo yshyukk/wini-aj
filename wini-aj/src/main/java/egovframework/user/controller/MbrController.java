@@ -33,13 +33,13 @@ public class MbrController {
 	@ResponseBody
 	public MbrVO mbrLogin(MbrVO mbrVO, HttpSession session) throws Exception {
 		
-		int mbr_sn = mbrService.mbrLogin(mbrVO).getMbr_sn(); // 세션에 저장되어 있는 회원 번호
-		int mbr_type = mbrService.mbrLogin(mbrVO).getMbr_type(); // 세션에 저장되어 있는 회원 구분
+
 		
-		// 세션에 회원 번호, 회원 구분 저장
-		session.setAttribute("mbr_sn", mbr_sn);
-		session.setAttribute("mbr_type", mbr_type);
-		
+		// 세션에 회원 번호, 권한 저장
+		session.setAttribute("mbr_sn", mbrService.mbrLogin(mbrVO).getMbr_sn());
+		session.setAttribute("mbr_type", mbrService.mbrLogin(mbrVO).getMbr_type());
+
+
 		return mbrService.mbrLogin(mbrVO); 
 	}
 	
@@ -85,7 +85,7 @@ public class MbrController {
 	// 마이페이지 - 회원 조회
 	@RequestMapping(value = "/mbrPage.do", method = RequestMethod.POST)
 	@ResponseBody
-	public MbrVO mbrPage(MbrVO mbrVO, HttpSession session) throws Exception {
+	public MbrVO mbrPage(HttpSession session) throws Exception {
 		
 		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
 
@@ -112,7 +112,7 @@ public class MbrController {
 		
 		mbrService.mbrDelete(mbrVO);
 		
-		return "user/MbrLogin.tiles";
+		return "user/MbrLogin";
 	}
 	
 	// 사용자 권한 관리 페이지
@@ -130,15 +130,14 @@ public class MbrController {
 		return mbrService.mbrList(mbrVO); 
 	}
 	
-	// 사용자 권한 관리 페이지 - 회원 수정
+	// 사용자 권한 관리 페이지 - 권한 변경
 	@RequestMapping(value = "/mbrAuthorityUpdate.do", method = RequestMethod.POST)
 	@ResponseBody
 	public void mbrAuthorityUpdate(MbrVO mbrVO, HttpSession session) throws Exception {
-
-		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
 		
 		mbrService.mbrAuthorityUpdate(mbrVO);
 	}
+	
 	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 출력
 	@RequestMapping(value ="/mbrWaitList.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -152,9 +151,6 @@ public class MbrController {
 	@ResponseBody
 	public void mbrWait(MbrVO mbrVO, HttpSession session) throws Exception {
 
-		int mbr_sn = (int) session.getAttribute("mbr_sn"); // 세션에 저장되어 있는 회원 번호
-		int mbr_type = (int) session.getAttribute("mbr_type"); // 세션에 저장되어 있는 회원 구분
-		
 		mbrService.mbrWait(mbrVO);
 	}
 }

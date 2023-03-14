@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,7 +32,7 @@ public class EquipController {
 //	장비 사용현황 통계 페이지 이동
 	@RequestMapping(value = "/equipStatics.do")
 	public String equipStatics() {
-		return "/equip/equipStatics";
+		return "equip/equipStatics.tiles";
 	}
 	
 /**
@@ -40,11 +41,20 @@ public class EquipController {
  * */
 	
 //	장비 종류 목록 조회
+	
+//	@RequestMapping(value = "/equipType.do")
+//	@ResponseBody 
+//	public List equipType(@RequestParam Map<String, Object> equipMap) throws Exception {
+//		
+//		List typeResult = EquipService.list_map("EquipDAO.selectEquipType", equipMap);
+//		
+//		return typeResult;
+//	}
 	@RequestMapping(value = "/equipType.do")
 	@ResponseBody 
-	public List equipType(@RequestParam Map<String, Object> equipMap) throws Exception {
+	public Map equipType(@RequestParam Map<String, Object> equipMap, ModelMap model) throws Exception {
 		
-		List typeResult = EquipService.list_map("EquipDAO.selectEquipType", equipMap);
+		Map<String, Object> typeResult = EquipService.map("EquipDAO.selectEquipType", "EquipDAO.selectEquipTypeCnt",equipMap);
 		
 		return typeResult;
 	}
@@ -84,14 +94,23 @@ public class EquipController {
  * CRUD
  * */
 //	장비 목록 조회
+//	@RequestMapping(value = "/equipList.do")
+//	@ResponseBody 
+//	public List equipList(@RequestParam Map<String, Object> equipMap) throws Exception {
+//		
+//		List listResult = EquipService.list_map("EquipDAO.selectEquipList", equipMap);
+//		
+//		return listResult;
+//	}
 	@RequestMapping(value = "/equipList.do")
 	@ResponseBody 
-	public List equipList(@RequestParam Map<String, Object> equipMap) throws Exception {
+	public Map equipList(@RequestParam Map<String, Object> equipMap, ModelMap model) throws Exception {
 		
-		List listResult = EquipService.list_map("EquipDAO.selectEquipList", equipMap);
+		Map<String, Object> typeResult = EquipService.map("EquipDAO.selectEquipList", "EquipDAO.selectEquipListCnt", equipMap);
 		
-		return listResult;
+		return typeResult;
 	}
+	
 //	장비 추가
 	@RequestMapping(value = "/addEquip.do")
 	@ResponseBody 

@@ -85,6 +85,7 @@
 			SELECT mbr_sn			<!-- 회원 번호 -->
 				 , mbr_id			<!-- 아이디 -->
 				 , mbr_nm			<!-- 이름 --> 
+				 , mbr_type
 			FROM AJ_USER			<!-- 회원 테이블 -->
 			WHERE mbr_type != 3		<!-- 승인 대기중인 회원 제외 -->
 			ORDER BY mbr_sn ASC

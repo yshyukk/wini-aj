@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface EquipService {
+	//map 형태 출력
+	Map<String, Object> map(String queryId, String queryId2, Map<String, Object> param) throws Exception;
+	
 	//단건 조회 출력
 	List list_map(String queryId, Map<String, Object> param) throws Exception; 
 

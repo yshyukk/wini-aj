@@ -28,18 +28,12 @@
     -->
     
     <!-- oracle (POM에서 commons-dbcp, ojdbc(라이센스 사항으로 별도로 배포되지 않음) 관련 라이브러리 설정) -->
-    <!-- <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
         <property name="url" value="jdbc:oracle:thin:@192.168.0.250:1521:ORCL" />
         <property name="username" value="student"/>
         <property name="password" value="student00"/>
-    </bean> -->
-    
-     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.56.1:1521:xe" />
-        <property name="username" value="wini2"/>
-        <property name="password" value="wini2"/>
-    </bean>
+    </bean> 
+
 
 </beans>

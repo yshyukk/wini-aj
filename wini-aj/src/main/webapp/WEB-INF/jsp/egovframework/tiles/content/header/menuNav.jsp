@@ -11,13 +11,12 @@
 <style>
  	#nav_container{display:flex; background-color:#93DAFF; width:fit-content;} 
 	.nav_li{list-style-type:none; width:200px; cursor:pointer};
-	.nav_li>a:hover{background-color:red;}
-	
-	
 </style>
 </head>
 <body>
+<div>
 	<div>
+		<img src="images/egovframework/menu/logo.png" onclick="location.href='main.do'">
 		<c:if test="${mbr_sn ne null}">
 			로그인중입니다.
 		</c:if>
@@ -29,7 +28,7 @@
 	<div id="nav-wrap" style="width:100%; display:flex; flex-direction:column">
 		
 	</div>
-
+</div>
 </body>
 
 <script>
@@ -47,7 +46,7 @@
 			}
 		})
 	}
-	// 메뉴 리스트 조회
+	/********* 메뉴 리스트 조회 ***************/
 	function menuNavAjax_result_fn(menuInfo){
 		var menuList = menuInfo.menuList;
 		
@@ -120,12 +119,12 @@
 	})
 	
 	function move_page(url, level){
-		
+		//url값이 null이면 현재페이지 유지
 		if(url == 'null'){
 			url ='#';
 		}
 		
-		location.href =   url;
+		location.href = url;
 	}
 	
 

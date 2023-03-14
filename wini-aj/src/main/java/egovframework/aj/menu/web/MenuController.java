@@ -17,19 +17,43 @@ import egovframework.aj.menu.service.MenuService;
 @Controller
 public class MenuController {
 	
+	
+	/*	@ 상단 메뉴바 및 페이지 전체에 메뉴 관련 기능에 대한 컨트롤러
+	 *  @ 메뉴바는 tiles를 이용
+	 *    - menuNav.jsp 경로 : WEB-INF/tiles/content/header/menuNav.jsp
+	 *  @ sql.xml
+	 *    - sqlmap/menu/menu-map.xml
+	 */
 	@Resource(name="menuService")
 	private MenuService mService;
 	
+	/*
+	 * @ 메뉴바 출력
+	 */
 	@RequestMapping(value = "/menuNav.do")
 	public String menuNav() {
 	
 		return "/menu/menuNav";
 	}
 	
+	
+	/*
+	 *	@ 메뉴 관리 페이지 출력 
+	 */
 	@RequestMapping(value = "/menuList.do")
 	public String menuList() {
 		return "menu/menuList.tiles";
 	}
+	
+	/*
+	 *	@ 메뉴 LIST 출력
+	 *		- 메뉴 관리 페이지에서 메뉴 LIST 출력
+	 *	@ param : commandMap 
+	 *		- userRole : 세션에 젖아한 유저 권한
+	 *	@ return : map 
+	 *		- list: 메뉴정보
+	 *		- string: 에러메세지
+	 */
 	
 	@RequestMapping(value="/menuInfo.do")
 	@ResponseBody
@@ -40,13 +64,19 @@ public class MenuController {
 		int userRole = (int) session.getAttribute("mbr_type");
 		
 		commandMap.put("userRole", userRole);
-	
+		//유저권한과 메뉴접근 권한을 비교해 메뉴 list 조회
 		Map<String,Object> menuInfo = mService.getMenuInfo(commandMap);
 		
 		return menuInfo;
 	}
 	
-	
+	/*
+	 *	@ 메뉴 단건 조회
+	 *	@ param : commandMap 
+	 *		- mu_seq: 메뉴 PK  
+	 * 	@ return : map 
+	 * 		- map : mu_seq가 일치하는 메뉴의 정보 
+	 */
 	@RequestMapping("muDetailInfo.do")
 	@ResponseBody
 	public Map<String,Object> muDetailInfo(@RequestParam Map<String,Object> commandMap) {		
@@ -56,7 +86,12 @@ public class MenuController {
 		return result;	
 	}
 	/*
-	 * @ 메뉴 IUD 
+	 * @ 메뉴 IUD
+	 * @ param : commandMap 
+	 * 		- IUD : 등록(I), 수정(U), 삭제(D) 구분하기 위한 string 
+	 * 		- menuList.jsp에서 form(id = mu-frm) 내 정보
+	 * @return : map
+	 * 		- String msg : 각각 로직 처리 후 처리 결과 구분하기 위한 값
 	 */
 	@RequestMapping("menuIUD.do")
 	@ResponseBody

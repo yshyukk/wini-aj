@@ -1,12 +1,11 @@
 package egovframework.aj.menu.service.impl;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -59,33 +58,51 @@ public class MenuServiceImpl implements MenuService{
 				if(commandMap.get("IUD").equals("I") && commandMap.get("IUD") != null) {
 					
 					if(menuCheck == 0) {
+						
 						mDAO.insert("menu.insMenuInfo", commandMap);
 						result.put("msg","success");
+					
 					}else {
-						result.put("msg","fail");
+					
+						result.put("msg","checkErr");
 					}
 			
 				}else if(commandMap.get("IUD").equals("U") && commandMap.get("IUD") != null) {
-					
-					if(menuCheck == 0) {
 						
-						mDAO.update("menu.updMenuInfo", commandMap);
+						/* 메뉴이름이 변경되지 않았으면 (updMenuCheck>0) 그대로 update
+						*  메뉴이름이 변경되었다면 같은 메뉴이름이 있는지 중복체크(menuChck == 0)후 update 
+						*/
+						int updMenuChek = (int)mDAO.select("menu.checkUpdMenuId",commandMap);
+						
+						if(updMenuChek > 0) {
+							
+							mDAO.update("menu.updMenuInfo", commandMap);
+						
+						}else { //메뉴이름이 변경되었으면
+							
+							if(menuCheck == 0) { //수정할 메뉴이름에 중복검사를 하고 중복되지 않으면
+								mDAO.update("menu.updMenuInfo", commandMap);
+							}else {
+								result.put("msg","checkErr");
+							}
+						}
+						
 						result.put("msg","success");
-					}else {
-						result.put("msg","fail");
-					}
+					
 				}else if(commandMap.get("IUD").equals("D") && commandMap.get("IUD") != null) {
 						
 					//하위메뉴가 있으면 삭제금지
 					int refCheck = (int)mDAO.select("menu.checkChildMenu",commandMap);
-					
 					//메뉴 level 생성 제한하기 위해 생성하고자 하는 메뉴의 상위메뉴의 레벨을 조회
 						
 					if(refCheck == 0) {
+						
 						mDAO.delete("menu.delMenuInfo", commandMap);
 						result.put("msg","success");
+					
 					}else {
-						result.put("msg","fail");
+						
+						result.put("msg","checkErr");
 					}
 				}
 			}catch(Exception e) {

@@ -79,7 +79,7 @@ public class MbrController {
 	@RequestMapping(value = "/myPage.do") 
 	public String myPage() throws Exception {
 
-		return "user/MbrPage"; 
+		return "user/MbrPage.tiles"; 
 	}
 	
 	// 마이페이지 - 회원 조회
@@ -112,14 +112,14 @@ public class MbrController {
 		
 		mbrService.mbrDelete(mbrVO);
 		
-		return "user/MbrLogin";
+		return "user/MbrLogin.tiles";
 	}
 	
 	// 사용자 권한 관리 페이지
 	@RequestMapping(value = "/mbrAuthority.do") 
 	public String mbrAuthority() throws Exception {
 
-		return "user/MbrAuthority"; 
+		return "user/MbrAuthority.tiles"; 
 	}
 	
 	// 사용자 권한 관리 페이지 - 회원 리스트 출력

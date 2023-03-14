@@ -17,7 +17,6 @@
 <div id="wrapepr" style="display:inline-flex; justify-content:space-between; width:100%">
 	
 	<div id="menu-nav-wrap" style="width:30%;">
-	
 	</div>
 	
 	<div id="mu-frm-wrap" style="width:60%;">
@@ -120,15 +119,14 @@
 									+'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 				}else if(menuList[i].level < menuList[i-1].level){ //이전 레벨보다 작으면(부모)
 					appendTag += '<ul><li class="menu_li">'+menuList[i].muNm
-							  +'<button class="li_toggle">a</button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
+							  +'<button class="li_toggle">a</button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'
+							  + menuList[i].level +'"></li>';
 				}else if(menuList[i].level > menuList[i-1].level){ // 이전 레벨보다 크면(자식)
-					/*레벨 별로 태그를 닫아야 하기 때문에 
-					for(var j=1; j<=menuList[i].level; j++){
-						appendTag += '</ul>'
-					} */
 					
 					appendTag += '<li class="menu_li">'+menuList[i].muNm
-							   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
+							   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'
+							   + menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'
+							   + menuList[i].level +'"></li>';
 				}
 
 				for(var j=1; j<=menuList[i].level; j++){
@@ -159,7 +157,6 @@
 				appendTag += '<li class="menu_li">'+menuList[i].muNm
 						   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li><ul>';
 				
-				
 			}else if(menuList[i].level == menuList[i+1].level ){
 			
 				appendTag += '<li class="menu_li">'+menuList[i].muNm
@@ -172,21 +169,38 @@
 		appendTag += '</div>';
 	
 		$('#menu-nav-wrap').html(appendTag);
+		
+		$('.li_toggle').append('<img class="btn_img" src="images/egovframework/menu/down_arrow.png">');	
+		
+		
 // 		listGrid();
 		
 	}
-	
+	let cnt=1;
+
 	$(document).on("click",".li_toggle",function(){
+		
+		cnt++;
+		
+		let img = $(this).find('.btn_img');
+		
+		console.log("imgbtn",img)
 		
 		let target = $(this).parent();
 		let targetP = target.parent();
 		let hideTarget = targetP.find('ul');
+		console.log("count",cnt)
 		
+		console.log("cntCal", cnt%2)
+		if(cnt%2 == 0){
+			img.attr("src","images/egovframework/menu/up_arrow.png");
+		}else{
+			img.attr("src","images/egovframework/menu/down_arrow.png");
+		}
+
 		hideTarget.toggle();
+		
 	})
-	
-	
-	
 	
 	//등록할때 form에 상위 메뉴를 제외하고 나머지 초기화하기 위해 전역으로 선언하고 form을 초기화하는 btn이벤트 후에 이 값을 이용해 상위메뉴 유지	
 	let muRef;
@@ -199,18 +213,12 @@
 		$('#upd_btn').show();
 		$('#del_btn').show();
 		
-		//li를 클릭했을때 하위 해당 최상위 ul태그 아래에 ul태그(자식 level)를 숨기도록
 	 	let target = $(this);
-		let pTarget = target.parent();
-		let hideTarget = pTarget.find('ul');
-				
-		/* hideTarget.toggle(); */ 
 		
 		//상세조회
 		let muSeq = target.find('input[name="m_muSeq"]').val();
 		let level = target.find('input[name="m_level"]').val();
-		console.log("muSeq",muSeq)
-		console.log("level",level)
+		
 		if(level != 1){
 			muRef = target.parent().prev().text();	
 		}
@@ -226,7 +234,6 @@
 					},
 				dataType:"json",
 				success: function(result){
-					console.log("1",result)
 					
 					$('#mu_nm').val(result.muNm);
 					$('#mu_order').val(result.muOrder);

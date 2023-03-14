@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+  "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- tiles 적용 -->
+	<definition name="tileslayout" template="/WEB-INF/jsp/egovframework/tiles/content/tiles-layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/egovframework/tiles/content/header/menuNav.jsp" />
+		<put-attribute name="body" value="" />
+	</definition>
+ 
+	<!-- 타일즈 JSP 경로 -->
+	<definition name="*/*.tiles" extends="tileslayout">
+		<put-attribute name="body" value="/WEB-INF/jsp/egovframework/{1}/{2}.jsp" />
+	</definition>
+	
+</tiles-definitions>

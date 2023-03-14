@@ -23,12 +23,12 @@ public class EquipController {
 //	장비 목록 페이지 이동
 	@RequestMapping(value = "/equipmain.do")
 	public String equipmain() {
-		return "/equip/equipList";
+		return "equip/equipList.tiles";
 	}
 //	장비 점검 관리 페이지 이동
 	@RequestMapping(value = "/equipMgrmain.do")
 	public String equipMgrmain() {
-		return "/equip/equipListMgr";
+		return "equip/equipListMgr.tiles";
 	}
 //	장비 사용현황 통계 페이지 이동
 	@RequestMapping(value = "/equipStatics.do")

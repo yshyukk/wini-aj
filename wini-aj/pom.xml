@@ -238,6 +238,37 @@
 			<artifactId>gson</artifactId>
 			<version>2.8.5</version>
 		</dependency>
+		
+		
+	<!-- Tiles 세팅-->
+    
+    <!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-core -->
+	<dependency>
+	    <groupId>org.apache.tiles</groupId>
+	    <artifactId>tiles-core</artifactId>
+	    <version>3.0.8</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-servlet -->
+	<dependency>
+	    <groupId>org.apache.tiles</groupId>
+	    <artifactId>tiles-servlet</artifactId>
+	    <version>3.0.8</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp -->
+	<dependency>
+	    <groupId>org.apache.tiles</groupId>
+	    <artifactId>tiles-jsp</artifactId>
+	    <version>3.0.8</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.tiles/tiles-extras -->
+	<dependency>
+	    <groupId>org.apache.tiles</groupId>
+	    <artifactId>tiles-extras</artifactId>
+	    <version>3.0.8</version>
+	</dependency>
+		
 
 	</dependencies>
 	

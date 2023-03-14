@@ -17,11 +17,12 @@
 			,  MU_ROLE
 			,  MU_REF
 			,  MU_URL
+			,  MU_ID
 		FROM AJ_MENU
 		WHERE MU_ROLE <![CDATA[>=]]> #userRole#
 		START WITH mu_ref IS NULL
-		CONNECT BY PRIOR mu_nm = mu_ref
-		ORDER SIBLINGS BY MU_ORDER
+		CONNECT BY PRIOR MU_ID = MU_REF
+		ORDER SIBLINGS BY MU_ORDER, MU_NM
 	</select>
 	
 	
@@ -39,16 +40,16 @@
 			,  MU_ROLE
 			,  MU_REF
 			,  MU_URL
+			,  MU_ID
 		FROM AJ_MENU
 		WHERE MU_SEQ = #muSeq#
 		START WITH mu_ref IS NULL
-		CONNECT BY PRIOR mu_nm = mu_ref
+		CONNECT BY PRIOR MU_ID = MU_REF
 		ORDER SIBLINGS BY MU_ORDER
 		
 	</select>
 	
 	<!-- 메뉴이름 중복체크 -->
-	
 	<select id="menu.checkInsMenu" resultClass="int">
 		SELECT COUNT(1)
 		FROM AJ_MENU
@@ -70,6 +71,7 @@
 			 ,  MU_ROLE
 			 ,  MU_REF
 			 ,  MU_URL
+			 ,  MU_ID
 			 )
 			 VALUES
 			 (
@@ -82,12 +84,21 @@
 			  , #muRole#
 			  , #muRef#
 			  , #muUrl#
+			  , #muId#
 			 )
 	</insert>
 	
+	<!-- 메뉴 수정 시 아이디 수정 여부 조회 -->
+	<select id="menu.checkUpdMenuId" resultClass="int">
+		SELECT COUNT(1)
+		FROM AJ_MENU
+		WHERE MU_SEQ = #muSeq#
+		AND MU_NM = #muNm#
+	</select>
 	<!-- 메뉴 UPDATE -->
 	
 	<update id="menu.updMenuInfo">
+		
 		UPDATE AJ_MENU
 		SET MU_NM = #muNm#
 		  , MU_ORDER = #muOrder#
@@ -97,7 +108,9 @@
 		  , MU_ROLE = #muRole#
 		  , MU_REF = #muRef#
 		  , MU_URL = #muUrl#
+		  , MU_ID = #muId#
 		WHERE MU_SEQ = #muSeq#
+		OR MU_REF = #muNm#
 	</update>
 	
 	<select id="menu.checkChildMenu" resultClass="int">

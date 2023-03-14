@@ -9,15 +9,30 @@
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <title>로그인</title>
+<style>
+	#loginCol {
+		border: 1px solid black;
+	    padding: 10px;
+	    width: 300px;
+	    text-align: center;
+	}
+	#loginCol button {
+		margin: 15px;
+	    width: 70px;
+	    height: 30px;
+	}
+</style>
 </head>
 
-<body>	
-	<div>아이디 <input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id"></div>
-	<div>비밀번호 <input autocomplete="one-time-code" type="password" id="password" name="password"></div>
-	
-	<button type="submit" id="insert" onclick="mbrLogin()">로그인</button>
-	<button type="submit" id="back" onclick="location.href='/wini-aj/join.do'">회원가입</button>
-	
+<body>
+	<h3>wini-aj</h3>
+	<div id="loginCol">
+		<div>아이디 <input autocomplete="one-time-code" type="text" id="mbr_id" name="mbr_id"></div>
+		<div>비밀번호 <input autocomplete="one-time-code" type="password" id="password" name="password"></div>
+		
+		<button type="submit" id="insert" onclick="mbrLogin()">로그인</button>
+		<button type="submit" id="back" onclick="location.href='/wini-aj/join.do'">회원가입</button>
+	</div>
 	<script>
 	function mbrLogin() {	
 		

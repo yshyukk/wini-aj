@@ -9,12 +9,12 @@
 
 <title>사용자 권한 관리</title>
 <style>
-	table, td{
-		border : 1px solid black;
-	}
-	#typeTable{
-		width : 500px;
-	}
+   table, td{
+      border : 1px solid black;
+   }
+   #typeTable{
+      width : 500px;
+   }
 </style>
 </head>
 

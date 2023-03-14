@@ -40,6 +40,7 @@
 	<h1>장비목록 페이지</h1>
 	<div id="tables">
 		<div id="eqpType"></div>
+		<div id="pagin"></div>
 		<div id="eqpList"></div>
 	</div>
 	
@@ -82,7 +83,6 @@ $(function(){
 				text += "<tr id='addTypeCol'></tr>";
 				text +="</table>";
 				text += "<button onclick='addType()'>추가</button>";
-				
 				
 				$("#eqpType").html(text);
 			}, 

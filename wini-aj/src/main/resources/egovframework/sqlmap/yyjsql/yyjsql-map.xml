@@ -137,6 +137,18 @@
       DELETE FROM AJ_EQUIP
       WHERE eqp_sn = #equipNum#
    </delete>
+	<select id="EquipDAO.selectEquipStc" resultClass="egovMap">
+		SELECT 
+			AET.EQP_TYPE  				<!-- 타입명 -->
+			, COUNT(eqp_sn) AS Ceqp_sn				<!-- 전체개수 -->
+			, COUNT(CASE WHEN dst_yn='Y' THEN 1 END) AS Cdst_yn <!-- 배부 개수 -->
+			, COUNT(CASE WHEN repair_yn='Y' THEN 1 END) AS Crepair_yn <!-- 수리입고 개수 -->
+			, COUNT(eqp_sn) - COUNT(CASE WHEN dst_yn='Y' THEN 1 END) - COUNT(CASE WHEN repair_yn='Y' THEN 1 END) AS Call<!-- 잔여개수 -->
+		FROM AJ_EQUIP AE
+		LEFT JOIN AJ_EQUIP_TYPE AET
+		ON AE.EQP_CODE  = AET.EQP_CODE 
+		GROUP BY AET.EQP_TYPE 
+	</select>
 </sqlMap>
 
 

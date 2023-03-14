@@ -46,8 +46,15 @@
 <body>
 	<h1>장비 점검 관리 페이지</h1>
 	<div id="tables">
-		<div id="eqpType"></div>
-		<div id="eqpList"></div>
+		<div>
+			<div id="eqpType"></div>
+			<div id="paging1"></div>
+		</div>
+		<div>
+			<div id="eqpList"></div>
+			<div id="paging2"></div>
+		</div>
+
 	</div>
 	
 	<div id="eqpDetail"></div>
@@ -56,33 +63,38 @@
 
 <script>
 $(function(){
-	equipType();
+	equipType(1);
 	equipList();
 })
 
-/* 장비 종류 조회 */
-	function equipType(){
+//* 장비 종류 조회 */
+	function equipType(pageNo){
 	var text = "";
+	var sendData = {
+			page : pageNo
+	}
 		$.ajax({
 			type : "post",
 			dataType : "json",
+			data : sendData,
 			url : "./equipType.do",
 			success:function(data){
+				console.log(data);
 				text +="<table id='typeTable'>";
 				text +=	"<tr class='toptr'>";
 				text +=		"<th>장비코드</th>";
 				text +=		"<th>장비종류</th>";
 				text +=		"<th>등록일</th>";
 				text +=	"</tr>";
-				for(var i = 0 ; i < data.length; i++){
-					text +=	"<tr onclick='equipList("+(i+1)+")'>";
-					text += "<td>"+data[i].eqpCode+"</td>";
-					text += "<td><input id='typeName"+(i+1)+"' type='text' value='"+data[i].eqpType+"' /></td>";
-					text += "<td>"+data[i].regDt+"</td>";
+				for(var i = 0 ; i < data.result.length; i++){
+					text +=	"<tr onclick='equipList("+(i+1)+", 1)'>";
+					text += "<td>"+data.result[i].eqpCode+"</td>";
+					text += "<td><input id='typeName"+(i+1)+"' type='text' value='"+data.result[i].eqpType+"' /></td>";
+					text += "<td>"+data.result[i].regDt+"</td>";
 					text += "<td><button onclick='deleteType("+(i+1)+")'>삭제</button><button onclick='updateType("+(i+1)+")'>수정</button></td>"
 					text +=	"</tr>";
 				}
-				for(var j=0; j<(10-data.length); j++){
+				for(var j=0; j<(10-data.result.length); j++){
 					text +=	"<tr>";
 					text += "<td>-</td>";
 					text += "<td>-</td>";
@@ -93,6 +105,19 @@ $(function(){
 				text +="</table>";
 				text += "<button onclick='addType()'>추가</button>";
 				
+// 				//페이징
+// 				var lastpg = Math.ceil(data.totalCnt / 10);
+// 				var pagebtn ="";
+// 				pagebtn += "<button onclick='equipList("+pageNo+"-1)'>이전</button>";
+// 				pagebtn += "<button onclick='equipList("+pageNo+"+1)'>다음</button>";
+// 				$("#paging1").html(pagebtn);
+// 				if(pageNo == 0) {
+// 					alert("첫 페이지 입니다.");
+// 					equipList(1);
+// 				} else if (pageNo >= lastpg+1){
+// 					alert("마지막 페이지 입니다.");
+// 					equipList( lastpg);
+// 				}
 				
 				$("#eqpType").html(text);
 			}, 
@@ -101,6 +126,7 @@ $(function(){
 			}
 		});
 	}
+	
 /* 장비 종류 삭제 */
 	function deleteType(typeNum) {
 		var sendData = {
@@ -113,55 +139,65 @@ $(function(){
 				data : sendData,
 				success:function(){
 						alert("삭제하였습니다.");
-						equipType();
+						equipType(1);
 					}
 			});
 		}else{alert("취소되었습니다.");}
 	}
 /* 장비 종류 수정 */
 	function updateType(typeNum){
-		var sendData = {
-				typeNum : typeNum
-				, typeName : $("#typeName"+typeNum).val()
+		if($.trim($("#addTypeNm").val()) == ""){
+			alert("종류명을 입력해주세요");
+		}else{
+			var sendData = {
+					typeNum : typeNum
+					, typeName : $("#typeName"+typeNum).val()
+			}
+			if(confirm("수정하시겠습니까?")){
+				$.ajax({
+					type : "post",
+					url : "./updateEquipType.do",
+					data : sendData,
+					success:function(){
+							alert("수정하였습니다.");
+							equipType(1);
+						}
+					});
+			}else{alert("취소되었습니다.");}
 		}
-		if(confirm("수정하시겠습니까?")){
-			$.ajax({
-				type : "post",
-				url : "./updateEquipType.do",
-				data : sendData,
-				success:function(){
-						alert("수정하였습니다.");
-						equipType();
-					}
-				});
-		}else{alert("취소되었습니다.");}
+		
 	}	
 /* 장비 종류 추가 */
 	function addType(){
-	var text ="";
-	text += 	"<td><input value='번호(자동부여)' readonly/></td>";
-	text += 	"<td><input id='addTypeNm' placeholder='종류명'/></td>";
-	text += 	"<td colspan='2'><button onclick='submitType()'>생성</button>";
-	text += 	"<button onclick='addCancel(1)'>취소</button></td>";
-	$("#addTypeCol").html(text);
-}
+		var text ="";
+		text += 	"<td><input value='번호(자동부여)' readonly/></td>";
+		text += 	"<td><input id='addTypeNm' placeholder='종류명'/></td>";
+		text += 	"<td colspan='2'><button onclick='submitType()'>생성</button>";
+		text += 	"<button onclick='addCancel(1)'>취소</button></td>";
+		$("#addTypeCol").html(text);
+	}
 
 /* 장비 종류 추가 확인 */
 	function submitType(){
-		var sendData = {
-				addTypeNm : $("#addTypeNm").val()
+		if($.trim($("#addTypeNm").val()) == ""){
+			alert("종류명을 입력해주세요");
+		}else{
+			var sendData = {
+					addTypeNm : $("#addTypeNm").val()
+			}
+			if(confirm("등록하시겠습니까?")){
+				$.ajax({
+					type : "post",
+					url : "./addEquipType.do",
+					data : sendData,
+					success:function(){
+							alert("등록되었습니다.");
+							equipType(1);
+						}
+					});
+			}
 		}
-		if(confirm("등록하시겠습니까?")){
-			$.ajax({
-				type : "post",
-				url : "./addEquipType.do",
-				data : sendData,
-				success:function(){
-						alert("등록되었습니다.");
-						equipType();
-					}
-				});
-		}
+		
 	}
 	
 /* 장비 종류 추가 취소 */
@@ -183,9 +219,10 @@ $(function(){
 	
 	
 /* 장비 목록 조회 */
-	function equipList(typeNum){
+	function equipList(typeNum, pageNo){
 		var sendData = {
-				typeNum : typeNum
+				typeNum : typeNum,
+				page : pageNo
 		}
 		var text = "";
 		$.ajax({
@@ -195,29 +232,30 @@ $(function(){
 			data : sendData,
 			success:function(data){
 				text +="<table id='equipTable'>";
-				if(data.length == 0){
-					text += "<tr><td colspan='4'>조회된 데이터가 없습니다.</td></tr></table>";
+				if(data.result.length == 0){
+					text += "<tr><td colspan='4'>조회된 데이터가 없습니다.</td></tr>";
+					text += "<tr id='addEquipCol'></tr></table>";
 					text += "<button onclick='addEquip("+typeNum+")'>추가</button>";
-				} else if (data.length != 0){
+				} else if (data.result.length != 0){
 					text +=	"<tr class='toptr'>";
-					text +=		"<th>번호</th>";
+					text +=		"<th>장비 식별 번호</th>";
 					text +=		"<th>장비명</th>";
 					text +=		"<th>장비 S/N</th>";
 					text +=		"<th>배부여부</th>";
 					text +=		"<th>수리여부</th>";
 					text +=	"</tr>";
 					
-					for(var i = 0 ; i < data.length; i++){
-						text +=	"<tr onclick='equipDetail("+data[i].eqpSn+")'>";
-						text += "<td>"+data[i].eqpSn+"</td>";
-						text += "<td>"+data[i].eqpNm+"</td>";
-						text += "<td>"+data[i].eqpNo+"</td>";
-						text += "<td>"+data[i].dstYn+"</td>";
-						text += "<td>"+data[i].repairYn+"</td>";
+					for(var i = 0 ; i < data.result.length; i++){
+						text +=	"<tr onclick='equipDetail("+data.result[i].eqpSn+")'>";
+						text += "<td>"+data.result[i].eqpSn+"</td>";
+						text += "<td>"+data.result[i].eqpNm+"</td>";
+						text += "<td>"+data.result[i].eqpNo+"</td>";
+						text += "<td>"+data.result[i].dstYn+"</td>";
+						text += "<td>"+data.result[i].repairYn+"</td>";
 						text +=	"</tr>";
 					}
-					for(var j=0; j<(10-data.length); j++){
-						text +=	"<tr onclick='addCacel(3)'>";
+					for(var j=0; j<(10-data.result.length); j++){
+						text +=	"<tr>";
 						text += "<td>-</td>";
 						text += "<td>-</td>";
 						text += "<td>-</td>";
@@ -228,7 +266,30 @@ $(function(){
 					text += "<tr id='addEquipCol'></tr>";
 					text +="</table>";
 					text += "<button onclick='addEquip("+typeNum+")'>추가</button>";
+					
+					var pagebtn ="";
+					pagebtn += "<button onclick='equipList("+typeNum+","+pageNo+"-1)'>이전</button>";
+					pagebtn += "<button onclick='equipList("+typeNum+","+pageNo+"+1)'>다음</button>";
+					$("#paging2").html(pagebtn);
 				}
+				
+				//페이징
+				var lastpg = 0;
+				if(Math.ceil(data.totalCnt / 10) == 3){
+					lastpg = Math.ceil(data.totalCnt / 10);
+				}else{
+					lastpg = 3;
+				}
+				console.log(lastpg, pageNo);
+				
+				if(pageNo == 0) {
+					alert("첫 페이지 입니다.");
+					equipList(typeNum, 1);
+				} else if (pageNo > lastpg){
+					alert("마지막 페이지 입니다.");
+					equipList(typeNum, lastpg);
+				}
+				
 				$("#eqpList").html(text);
 			}, 
 			error : function(){
@@ -256,33 +317,42 @@ $(function(){
 	}
 /* 장비 추가 확인 */
 	function submitEquip(typeNum){
-		if(confirm("추가하시겠습니까? 추가 후 수정, 삭제는 관리자에게 문의하세요.")){
-			if($.trim($("#addEquipWhere").val()) == ""){
-				var dstYn = "N"
-			} else {
-				var dstYn = "Y"
-				}
-			var sendData = {
-					typeNum : typeNum
-					, addEquipNm : $("#addEquipNm").val()
-					, addEquipNo : $("#addEquipNo").val()
-					, addEquipRegNm : $("#addEquipRegNm").val()
-					, addEquipWhere : $("#addEquipWhere").val()
-					, dstYn : dstYn
-			}
-			$.ajax({
-				type : "post",
-				url : "./addEquip.do",
-				data : sendData,
-				success:function(){
-					equipList(typeNum);
-					addCancel(2);
-					alert("추가되었습니다.");
-					},error:function(){
-						alert("error");
+		if($.trim($("#addEquipNm").val()) == ""){
+			alert("장비명을 입력해주세요");
+		} else if($.trim($("#addEquipNo").val()) == ""){
+			alert("장비 S/N 을 입력해주세요");
+		} else if($.trim($("#addEquipRegNm").val()) == ""){
+			alert("등록자를 입력해주세요");
+		}  else {
+			if(confirm("추가하시겠습니까? 추가 후 수정, 삭제는 관리자에게 문의하세요.")){
+				if($.trim($("#addEquipWhere").val()) == ""){
+					var dstYn = "N"
+				} else {
+					var dstYn = "Y"
 					}
-				});
-		}else {alert("취소되었습니다.");}
+				var sendData = {
+						typeNum : typeNum
+						, addEquipNm : $("#addEquipNm").val()
+						, addEquipNo : $("#addEquipNo").val()
+						, addEquipRegNm : $("#addEquipRegNm").val()
+						, addEquipWhere : $("#addEquipWhere").val()
+						, dstYn : dstYn
+				}
+				$.ajax({
+					type : "post",
+					url : "./addEquip.do",
+					data : sendData,
+					success:function(){
+						equipList(typeNum);
+						addCancel(2);
+						alert("추가되었습니다.");
+						},error:function(){
+							alert("error");
+						}
+					});
+			}else {alert("취소되었습니다.");}
+		}
+		
 	}
 	
 // ####	장비 상세보기 (관리자용) ####

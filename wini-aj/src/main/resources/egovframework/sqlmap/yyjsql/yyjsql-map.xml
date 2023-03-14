@@ -8,16 +8,31 @@
    
 <!-- ###### 장비종류 관련 쿼리문 ######  -->
    
-
-   <!-- 장비 종류 조회 -->
+<!-- 장비 종류 조회 -->
    <select id="EquipDAO.selectEquipType" resultClass="egovMap">
-      SELECT 
-         eqp_code                                 		<!-- 장비 종류 코드 -->
-         , eqp_type                                 	<!-- 장비 종류명 -->
-         , TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt      <!-- 장비 종류 등록일 -->
-      FROM AJ_EQUIP_TYPE
-      ORDER BY eqp_code ASC
+		SELECT b.rno, b.eqp_code, b.eqp_type, b.reg_dt FROM
+			(SELECT rownum AS rno, a.eqp_code, a.eqp_type, a.reg_dt
+			FROM(SELECT 
+			 	eqp_code
+			 	, eqp_type
+			 	, TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt
+				FROM AJ_EQUIP_TYPE 
+				ORDER BY eqp_code  ASC )a)b
+      <![CDATA[WHERE b.rno > (#page#-1)*10 AND b.rno <= (#page#*10)]]>
    </select>
+   <select id="EquipDAO.selectEquipTypeCnt" resultClass="int">
+		SELECT COUNT(eqp_code)
+		FROM AJ_EQUIP_TYPE
+	</select>
+  <!-- 장비 종류 조회 --> 
+<!--    <select id="EquipDAO.selectEquipType" resultClass="egovMap"> -->
+<!--       SELECT  -->
+<!--          eqp_code                                 		장비 종류 코드 -->
+<!--          , eqp_type                                 	장비 종류명 -->
+<!--          , TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt      장비 종류 등록일 -->
+<!--       FROM AJ_EQUIP_TYPE -->
+<!--       ORDER BY eqp_code ASC -->
+<!--    </select> -->
    
    <!-- 장비 종류 등록 -->
    <insert id="EquipDAO.insertEquipType">
@@ -54,23 +69,30 @@
 
    <!-- 장비 목록 조회 -->
    <select id="EquipDAO.selectEquipList" resultClass="egovMap">
-      SELECT 
-            eqp_code                           			<!-- 장비 종류 코드 -->   
-         , eqp_sn                              			<!-- 장비 번호 -->
-         , eqp_nm                              			<!-- 장비 이름 -->
-         , eqp_no                              			<!-- 장비 시리얼 번호 -->
-         , reg_nm                              			<!-- 등록자 -->
-         , TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt      <!-- 등록일 -->
-         , TO_CHAR(buy_dt, 'YYYY-MM-DD') AS buy_dt      <!-- 구입일 -->
-         , buy_price                              		<!-- 구일 가격 -->
-         , dst_yn                              			<!-- 배부(사용)여부-->
-         , where_use                              		<!-- 사용장소 -->
-         , repair_yn                              		<!--수리여부 -->
-      FROM AJ_EQUIP
-      WHERE eqp_code = #typeNum#
-      ORDER BY eqp_sn ASC
+		SELECT b.rno, b.eqp_code, b.eqp_sn, b.eqp_nm, b.eqp_no, b.reg_nm, b.reg_dt, b.buy_dt, b.buy_price, b.dst_yn, b.where_use, b.repair_yn
+		FROM(SELECT rownum AS rno, a.eqp_code, a.eqp_sn, a.eqp_nm, a.eqp_no, a.reg_nm, a.reg_dt, a.buy_dt, a.buy_price, a.dst_yn, a.where_use, a.repair_yn
+		FROM(SELECT 
+			eqp_code                           		
+		    , eqp_sn                              			
+			, eqp_nm                              			
+			, eqp_no                              			
+			, reg_nm                              			
+			, TO_CHAR(reg_dt, 'YYYY-MM-DD') AS reg_dt      
+			, TO_CHAR(buy_dt, 'YYYY-MM-DD') AS buy_dt     
+			, buy_price                              		
+			, dst_yn                              			
+			, where_use                              		
+			, repair_yn                              		
+		FROM AJ_EQUIP
+		WHERE eqp_code = #typeNum#
+		ORDER BY eqp_sn ASC) a)b
+      <![CDATA[WHERE b.rno > (#page#-1)*10 AND b.rno <= (#page#*10)]]>
 	</select>
-   
+   <select id="EquipDAO.selectEquipListCnt" resultClass="int">
+		SELECT COUNT(eqp_code)
+		FROM AJ_EQUIP
+		WHERE eqp_code = #typeNum#
+	</select>
    <!-- 장비 추가 -->
    <insert id="EquipDAO.insertEquip">
       INSERT INTO AJ_EQUIP
@@ -163,6 +185,8 @@
 		ON AE.EQP_CODE  = AET.EQP_CODE 
 		GROUP BY AET.EQP_TYPE 
 	</select>
+
+	
 
 </sqlMap>
 

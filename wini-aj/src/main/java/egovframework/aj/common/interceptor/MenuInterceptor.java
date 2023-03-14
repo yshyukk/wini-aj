@@ -1,5 +1,8 @@
 package egovframework.aj.common.interceptor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,21 +27,29 @@ public class MenuInterceptor extends WebContentInterceptor{
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		HttpSession session = request.getSession();
 		
-		//Session에서 userRole가져오기
-		/*
-		 * int userRole = 0;
-		 * 
+		
+		  HttpSession session = request.getSession();
 		  
-		 */
-//		int userId = (int) session.getAttribute("mbr_type");
-//		System.out.println(userId);
-//		modelAndView.addObject("menuList", menuList);
-//		modelAndView.addObject("userRole", userRole);
+		  //로그인 시 session에 저장한 사용자 권한 값을 가져와서 int userRole = (int)
+		  int userRole = (int) session.getAttribute("mbr_type");
 
-		// response.sendRedirect("/mainPage.do");
-		// 만약에 GetOutputStram() 어저구 오류가 나면 Interceptor 건드릴것
-	}
+		  HashMap<String,Object> commandMap = new HashMap<>();
+		  
+		  commandMap.put("userRole", userRole);
+		  
+		  System.out.println("post:::"+commandMap.get("userRole"));
+		 
+		  Map<String,Object> menuInfo = mService.getMenuInfo(commandMap);
+		  
+		  modelAndView.addObject("menuInfo", menuInfo); //
+			/*
+			 * modelAndView.addObject("menuList", menuList); //
+			 * modelAndView.addObject("userRole", userRole);
+			 */
+		  
+		 // response.sendRedirect("/mainPage.do"); // 만약에 GetOutputStram() 어저구 오류가 나면
+		 // Interceptor 건드릴것
+		 	}
 	
 }

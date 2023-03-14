@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     
 <!DOCTYPE html>
 <html>
@@ -14,7 +14,7 @@
 	<button onclick="location.href='equipStatics.do'">장비사용현황 통계</button>
 	<button id="user" onclick="location.href='mbrAuthority.do'">사용자 권한 관리</button>
 	<button onclick="location.href='myPage.do'">마이페이지</button>
-	<button onclick="location.href='mbrLogout.do'">로그아웃</button>
+	<button onclick="logout()">로그아웃</button>
 </body>
 
 <script>
@@ -26,5 +26,11 @@
 			$("#user").show();
 		}
 	})
+	
+	function logout(){
+		if (confirm("로그아웃 하시겠습니까?")){
+			location.href="mbrLogout.do"
+		}
+	}
 </script>
 </html>

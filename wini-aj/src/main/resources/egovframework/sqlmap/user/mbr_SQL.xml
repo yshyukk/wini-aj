@@ -9,7 +9,7 @@
 		SELECT mbr_sn 				<!-- 회원 번호 -->
 			 , mbr_id 				<!-- 아이디 -->
 			 , password 			<!-- 비밀번호 -->
-			 , mbr_type
+			 , mbr_type				<!-- 회원 구분 -->
 			 , use_yn 				<!-- Y/N 사용여부 -->
 		FROM AJ_USER 				<!-- 회원 테이블 -->
 		WHERE mbr_id = #mbr_id#
@@ -17,7 +17,7 @@
 
 	<!-- 회원가입 -->
 	<insert id="user.mbrInsert" parameterClass="MbrVO">
-		INSERT INTO AJ_USER <!-- 회원 테이블 -->
+		INSERT INTO AJ_USER 		<!-- 회원 테이블 -->
 		(
 			mbr_sn 					<!-- 회원 번호 -->
 		  , mbr_id 					<!-- 아이디 -->
@@ -47,14 +47,15 @@
 	
 	<!-- 회원가입 - 아이디 중복체크  -->
 	<select id="user.idCheck" resultClass="int">
-		SELECT COUNT(*) 
+		SELECT COUNT(1) 
 		FROM AJ_USER
 		WHERE use_yn = 'Y' AND mbr_id = #mbr_id#
 	</select>
 	
 	<!-- 마이페이지 - 회원 조회 -->
 	<select id="user.mbrPage" resultClass="MbrVO">
-		SELECT mbr_id				<!-- 아이디 -->
+		SELECT mbr_sn				<!-- 회원 번호 -->
+			 , mbr_id				<!-- 아이디 -->
 			 , password 			<!-- 비밀번호 -->
 			 , mbr_nm 				<!-- 이름 --> 
 			 , mbr_gen 				<!-- 성별 -->
@@ -67,8 +68,7 @@
 	<!-- 마이페이지 - 회원 수정 -->
 	<update id="user.mbrUpdate" parameterClass="MbrVO">
       UPDATE AJ_USER 				<!-- 회원 테이블 -->
-      SET mbr_nm = #mbr_nm#			<!-- 이름 -->
-        , mbr_tel = #mbr_tel#		<!-- 전화번호 -->
+      SET mbr_tel = #mbr_tel#		<!-- 전화번호 -->
         , mbr_email = #mbr_email#   <!-- 이메일 -->   
       WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
@@ -85,7 +85,7 @@
 			SELECT mbr_sn			<!-- 회원 번호 -->
 				 , mbr_id			<!-- 아이디 -->
 				 , mbr_nm			<!-- 이름 --> 
-				 , mbr_type
+				 , mbr_type			<!-- 회원 구분 -->
 			FROM AJ_USER			<!-- 회원 테이블 -->
 			WHERE mbr_type != 3		<!-- 승인 대기중인 회원 제외 -->
 			ORDER BY mbr_sn ASC

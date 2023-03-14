@@ -95,7 +95,6 @@
 			method:"POST",
 			dataType:"json",
 			success:function(result){
-				console.log(result)
 				menuAjax_result_fn(result);
 			}
 		})
@@ -141,6 +140,8 @@
 						   +'<button class="li_toggle" value="b"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 				if(menuList[i+1].level > 1){
 					appendTag += '<ul>';
+				}else if(menuList[i+1].level == 1){
+					appendTag +='</ul>'
 				}
 			}else if(menuList[i].level > menuList[i+1].level){ //다음에 올 애가 부모면
 				appendTag += '<li class="menu_li">'+menuList[i].muNm
@@ -163,7 +164,6 @@
 						   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 				
 			}
-			
 		}
 		//appendTag += '</ul>';
 		appendTag += '</div>';
@@ -183,13 +183,10 @@
 		cnt++;
 		
 		let img = $(this).find('.btn_img');
-		
-		console.log("imgbtn",img)
-		
+				
 		let target = $(this).parent();
 		let targetP = target.parent();
 		let hideTarget = targetP.find('ul');
-		console.log("count",cnt)
 		
 		console.log("cntCal", cnt%2)
 		if(cnt%2 == 0){
@@ -199,7 +196,6 @@
 		}
 
 		hideTarget.toggle();
-		
 	})
 	
 	//등록할때 form에 상위 메뉴를 제외하고 나머지 초기화하기 위해 전역으로 선언하고 form을 초기화하는 btn이벤트 후에 이 값을 이용해 상위메뉴 유지	
@@ -360,7 +356,8 @@
 					alert("등록 중 오류가 발생했습니다.")
 				}
 				
-				listGrid();	
+				listGrid();
+				navGrid();
 
 				//등록, 삭제일때는 form 리셋
 				if(result.IUD != "U"){

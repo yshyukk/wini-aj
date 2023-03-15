@@ -48,7 +48,7 @@
 	<!-- 회원가입 - 아이디 중복체크  -->
 	<select id="user.idCheck" resultClass="int">
 		SELECT COUNT(1) 
-		FROM AJ_USER
+		FROM AJ_USER				<!-- 회원 테이블 -->
 		WHERE use_yn = 'Y' AND mbr_id = #mbr_id#
 	</select>
 	
@@ -67,51 +67,57 @@
 	
 	<!-- 마이페이지 - 회원 수정 -->
 	<update id="user.mbrUpdate" parameterClass="MbrVO">
-      UPDATE AJ_USER 				<!-- 회원 테이블 -->
-      SET mbr_tel = #mbr_tel#		<!-- 전화번호 -->
-        , mbr_email = #mbr_email#   <!-- 이메일 -->   
-      WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+        UPDATE AJ_USER 				<!-- 회원 테이블 -->
+        SET mbr_tel = #mbr_tel#		<!-- 전화번호 -->
+          , mbr_email = #mbr_email# <!-- 이메일 -->   
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
 	
 	<!-- 마이페이지 - 회원 탈퇴 -->
 	<update id="user.mbrDelete" parameterClass="MbrVO">
-      UPDATE AJ_USER 				<!-- 회원 테이블 -->
-      SET use_yn = 'N'				<!-- Y/N 사용여부 -->
-      WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+        UPDATE AJ_USER 				<!-- 회원 테이블 -->
+        SET use_yn = 'N'			<!-- Y/N 사용여부 -->
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
 	
 	<!-- 사용자 권한 관리 페이지 - 회원 리스트 조회 -->
 	<select id="user.mbrList" resultClass="MbrVO">
-			SELECT mbr_sn			<!-- 회원 번호 -->
-				 , mbr_id			<!-- 아이디 -->
-				 , mbr_nm			<!-- 이름 --> 
-				 , mbr_type			<!-- 회원 구분 -->
-			FROM AJ_USER			<!-- 회원 테이블 -->
-			WHERE mbr_type != 3		<!-- 승인 대기중인 회원 제외 -->
-			ORDER BY mbr_sn ASC
+		SELECT mbr_sn				<!-- 회원 번호 -->
+			 , mbr_id				<!-- 아이디 -->
+			 , mbr_nm				<!-- 이름 --> 
+			 , mbr_type				<!-- 회원 구분 -->
+		FROM AJ_USER				<!-- 회원 테이블 -->
+		WHERE mbr_type != 3			<!-- 승인 대기중인 회원 제외 -->
+		ORDER BY mbr_sn ASC
 	</select>
 	
 	<!-- 사용자 권한 관리 페이지 - 회원 권한 수정 -->
 	<update id="user.mbrAuthorityUpdate" parameterClass="MbrVO">
-      UPDATE AJ_USER 				<!-- 회원 테이블 -->
-      SET mbr_type = #mbr_type#     <!-- 회원 구분 -->
-      WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+        UPDATE AJ_USER 				<!-- 회원 테이블 -->
+        SET mbr_type = #mbr_type#   <!-- 회원 구분 -->
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
 	
 	<!-- 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 조회 -->
 	<select id="user.mbrWaitList" resultClass="MbrVO">
-			SELECT mbr_sn			<!-- 회원 번호 -->
-				 , mbr_id			<!-- 아이디 -->
-				 , mbr_nm			<!-- 이름 --> 
-			FROM AJ_USER			<!-- 회원 테이블 -->
-			WHERE mbr_type = 3		<!-- 승인 대기중인 회원 -->
-			ORDER BY mbr_sn ASC
+		SELECT mbr_sn				<!-- 회원 번호 -->
+			 , mbr_id				<!-- 아이디 -->
+			 , mbr_nm				<!-- 이름 --> 
+		FROM AJ_USER				<!-- 회원 테이블 -->
+		WHERE mbr_type = 3			<!-- 승인 대기중인 회원 -->
+		ORDER BY mbr_sn ASC
 	</select>
 	
 	<!-- 사용자 권한 관리 페이지 - 회원가입 승인 -->
-	<update id="user.mbrWait" parameterClass="MbrVO">
-      UPDATE AJ_USER 				<!-- 회원 테이블 -->
-      SET mbr_type = 2  			<!-- 일반 사용자로 등록 -->
-      WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+	<update id="user.mbrPermission" parameterClass="MbrVO">
+        UPDATE AJ_USER 				<!-- 회원 테이블 -->
+        SET mbr_type = 2  			<!-- 일반 사용자로 등록 -->
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
+	
+	<!-- 사용자 권한 관리 페이지 - 회원가입 거부 -->
+	<delete id="user.mbrRefusal" parameterClass="MbrVO">
+        DELETE AJ_USER 				<!-- 회원 테이블 -->
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+	</delete>
 </sqlMap>

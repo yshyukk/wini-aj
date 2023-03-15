@@ -25,6 +25,7 @@
 			<button onclick="location.href='myPage.do'">마이페이지</button>
 			<button onclick="location.href='mbrLogout.do'">로그아웃</button>
 		</div>
+
 	<div id="nav-wrap" style="width:100%; display:flex; flex-direction:column">
 		
 	</div>
@@ -127,7 +128,12 @@
 		location.href = url;
 	}
 	
-
+	// 로그아웃
+	function logout(){
+		if (confirm("로그아웃 하시겠습니까?")){
+			location.href="mbrLogout.do"
+		}
+	}
 
 
 </script>

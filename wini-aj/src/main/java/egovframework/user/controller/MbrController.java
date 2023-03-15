@@ -34,12 +34,12 @@ public class MbrController {
 	public MbrVO mbrLogin(MbrVO mbrVO, HttpSession session) throws Exception {
 		
 		// 세션에 회원 번호, 권한 저장
-		//session.setAttribute("mbr_sn", mbrService.mbrLogin(mbrVO).getMbr_sn());
-		//session.setAttribute("mbr_type", mbrService.mbrLogin(mbrVO).getMbr_type());
-		session.setAttribute("mbr_sn", 1);
-		session.setAttribute("mbr_type", (int)0);
-		
-		return mbrService.mbrLogin(mbrVO); 
+
+		session.setAttribute("mbr_sn", mbrService.mbrLogin(mbrVO).getMbr_sn());
+		session.setAttribute("mbr_type", mbrService.mbrLogin(mbrVO).getMbr_type()); 
+
+		return mbrService.mbrLogin(mbrVO);
+
 	}
 	
 	// 로그아웃
@@ -132,7 +132,7 @@ public class MbrController {
 	// 사용자 권한 관리 페이지 - 권한 변경
 	@RequestMapping(value = "/mbrAuthorityUpdate.do", method = RequestMethod.POST)
 	@ResponseBody
-	public void mbrAuthorityUpdate(MbrVO mbrVO, HttpSession session) throws Exception {
+	public void mbrAuthorityUpdate(MbrVO mbrVO) throws Exception {
 		
 		mbrService.mbrAuthorityUpdate(mbrVO);
 	}
@@ -148,8 +148,16 @@ public class MbrController {
 	// 사용자 권한 관리 페이지 - 회원가입 승인
 	@RequestMapping(value = "/mbrWait.do", method = RequestMethod.POST)
 	@ResponseBody
-	public void mbrWait(MbrVO mbrVO, HttpSession session) throws Exception {
+	public void mbrPermission(MbrVO mbrVO) throws Exception {
 
-		mbrService.mbrWait(mbrVO);
+		mbrService.mbrPermission(mbrVO);
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 승인
+	@RequestMapping(value = "/mbrRefusal.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void mbrRefusal(MbrVO mbrVO) throws Exception {
+
+		mbrService.mbrRefusal(mbrVO);
 	}
 }

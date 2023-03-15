@@ -74,6 +74,11 @@ public class MenuServiceImpl implements MenuService{
 		
 		result.put("muSeq",commandMap.get("muSeq"));
 		
+		
+		//
+		String checkNm = (String) commandMap.get("muNm");
+		checkNm = checkNm.replace(" ","");
+		commandMap.put("checkNm", checkNm);
 		//메뉴이름  중복체크
 		int menuCheck = (int) mDAO.select("menu.checkInsMenu", commandMap);
 				

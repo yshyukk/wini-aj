@@ -54,7 +54,7 @@
 	<select id="menu.checkInsMenu" resultClass="int">
 		SELECT COUNT(1)
 		FROM AJ_MENU
-		WHERE MU_NM = #muNm#	<!-- 메뉴 이름 -->
+		WHERE REPLACE(MU_NM,' ','') = #checkNm#	<!-- 메뉴 이름 -->
 	</select>
 	
 	
@@ -96,7 +96,7 @@
 		SELECT COUNT(1)
 		FROM AJ_MENU
 		WHERE MU_SEQ != #muSeq#
-		AND MU_NM = #muNm#
+		AND REPLACE(MU_NM,' ','') = #checkNm#
 	</select>
 	
 	

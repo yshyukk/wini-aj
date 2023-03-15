@@ -9,22 +9,22 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <style>
- 	#nav_container{display:flex; background-color:#93DAFF; width:fit-content;} 
+ 	#nav_container{display:flex; background-color:#93DAFF; width:100%;} 
 	.nav_li{list-style-type:none; width:200px; cursor:pointer};
 </style>
 </head>
 <body>
 <div>
-	<div>
-		<img src="images/egovframework/menu/logo.png" onclick="location.href='main.do'">
-		<c:if test="${mbr_sn ne null}">
-			로그인중입니다.
-		</c:if>
-		<button onclick="location.href='myPage.do'">마이페이지</button>
-		<button onclick="location.href='mbrLogout.do'">로그아웃</button>
-	</div>
-	
-	
+
+			<img src="images/egovframework/menu/logo.png" onclick="location.href='main.do'">
+		<div style="display:inline-block; width:fit-content; float:right">	
+		
+			<c:if test="${mbr_sn ne null}">
+				로그인중입니다.
+			</c:if>
+			<button onclick="location.href='myPage.do'">마이페이지</button>
+			<button onclick="location.href='mbrLogout.do'">로그아웃</button>
+		</div>
 	<div id="nav-wrap" style="width:100%; display:flex; flex-direction:column">
 		
 	</div>
@@ -66,7 +66,7 @@
 				
 				}else if(menuList[i].level > menuList[i-1].level){ // 이전 레벨보다 크면(자식)
 					
-					appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].muUrl+')">'+menuList[i].muNm+'</li>';
+					appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].level+')">'+menuList[i].muNm+'</li>';
 				}
 	
 				for(var j=0; j<=menuList[i].level; j++){
@@ -77,7 +77,7 @@
 			// 다음에 올 값과 비교해서 그리기
 			if(menuList[i].level == 1){
 				//레벨을 시작할 때 <ul>태그 시작
-				appendTag += '<ul class="nav_ul"><li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].muUrl+')">'+menuList[i].muNm +'</li>';
+				appendTag += '<ul class="nav_ul"><li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].level+')">'+menuList[i].muNm +'</li>';
 				
 				if(menuList[i+1].level > 1){
 					appendTag += '<ul  class="nav_ul">';

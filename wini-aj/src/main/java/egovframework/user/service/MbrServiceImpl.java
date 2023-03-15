@@ -86,6 +86,12 @@ public class MbrServiceImpl implements MbrService{
 		mbrDAO.update("user.mbrAuthorityUpdate", mbrVO);	
 	}
 	
+	// 사용자 권한 관리 페이지 - 회원 탈퇴
+	@Override
+	public void adminDelete(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.adminDelete", mbrVO);	
+	}
+	
 	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트
 	@Override
 	public List<MbrVO> mbrWaitList(MbrVO mbrVO) throws Exception {

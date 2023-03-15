@@ -183,7 +183,7 @@
 	}
 	
 	//버튼 이미지를 바꿔주기위해서 전역으로 변수 선언 (짝수: up, 홀수:down)
-	let cnt=1;
+	var cnt=1;
 	
 	/************ 하위 메뉴 toggle 이벤트 **************/
 	$(document).on("click",".li_toggle",function(){
@@ -191,12 +191,12 @@
 		cnt++;
 		
 		//클릭한 태그 선택
-		let img = $(this).find('.btn_img');
+		var img = $(this).find('.btn_img');
 		
 		//태그 위치를 이용해 하위 메뉴를 시작하는 ul을 선택해서 toggle
-		let target = $(this).parent();
-		let targetP = target.parent();
-		let hideTarget = targetP.find('ul');
+		var target = $(this).parent();
+		var targetP = target.parent();
+		var hideTarget = targetP.find('ul');
 		
 		if(cnt%2 == 0){
 			img.attr("src","images/egovframework/menu/up_arrow.png");
@@ -223,11 +223,11 @@
 		$('#upd_btn').show();
 		$('#del_btn').show();
 		
-	 	let target = $(this);
+	 	var target = $(this);
 		
 		//상세조회
-		let muSeq = target.find('input[name="m_muSeq"]').val();
-		let level = target.find('input[name="m_level"]').val();
+		var muSeq = target.find('input[name="m_muSeq"]').val();
+		var level = target.find('input[name="m_level"]').val();
 		
 		if(level != 1){
 			muRef = target.parent().prev().text();	
@@ -303,7 +303,7 @@
 		
 		//하위 태그의 mu_id를 자동 생성할 때 상위 mu_id에 값을 붙여 사용하기 위해 
 		
-		let muId = $('#mu_id').val();
+		var muId = $('#mu_id').val();
 		
 		$('#mu-frm')[0].reset();
 		
@@ -368,9 +368,20 @@
 			  muId.focus();
 			  return false;
 		};
-			
 		
-	  let conf_word;
+		// 상위 메뉴의 사용여부를 체크할 떄 하위메뉴가 있으면 사용여부를 바꿀 수 없도록
+		var checkStat = $('#chk_useYn').is(":checked")?"Y":"N";
+		$('#use_yn').val(checkStat)
+		
+		var ynCheck = $('#use_yn').val();
+		
+		if(iud == "U" && ynCheck == "N" && muIdCnt != 0){
+			alert("하위 메뉴가 존재합니다.  \n확인 후 수정해주시기 바랍니다.");
+			$('#chk_useYn').prop("checked", true);
+			return false;
+		}
+		
+	  var conf_word;
 	  
 	  if(iud == "I")conf_word="등록";
 	  if(iud == "U")conf_word="수정";
@@ -380,10 +391,10 @@
 	  if(confirm(conf_word +" 하시겠습니까?")){
 		
 		  //체크박스 체크 여부에 따라 저장할 데이터 변경하기 
-		  let checkStat = $('#chk_useYn').is(":checked")?"Y":"N";
+		  var checkStat = $('#chk_useYn').is(":checked")?"Y":"N";
 		  $('#use_yn').val(checkStat)
 		  
-		  let data = $('#mu-frm').serialize();
+		  var data = $('#mu-frm').serialize();
 		  
 		  //IUD값 같이 보내기
 		  data += "&IUD="+iud;

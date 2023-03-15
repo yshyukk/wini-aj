@@ -36,7 +36,6 @@ public class MenuController {
 		return "/menu/menuNav";
 	}
 	
-	
 	/*
 	 *	@ 메뉴 관리 페이지 출력 
 	 */
@@ -57,7 +56,7 @@ public class MenuController {
 	
 	@RequestMapping(value="/menuInfo.do")
 	@ResponseBody
-	public Map<String,Object> menuInfo(HttpServletRequest request, Map<String,Object> commandMap) {
+	public Map<String,Object> menuInfo(HttpServletRequest request, @RequestParam Map<String,Object> commandMap) {
 		//로그인 시 session에 저장한 사용자 권한 값을 가져와서
 		HttpSession session = request.getSession();
 	

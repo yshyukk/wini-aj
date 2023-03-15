@@ -28,9 +28,8 @@ public class MenuServiceImpl implements MenuService{
 	@Override
 	public Map<String, Object> getMenuInfo(Map<String,Object> commandMap) {
 		
-		
 		List menuList = mDAO.list("menu.getMenuInfo", commandMap);
-		
+
 		HashMap<String, Object> menuInfo = new HashMap<>();
 		
 		menuInfo.put("menuList", menuList);

@@ -23,7 +23,7 @@
 				로그인중입니다.
 			</c:if>
 			<button onclick="location.href='myPage.do'">마이페이지</button>
-			<button onclick="location.href='mbrLogout.do'">로그아웃</button>
+			<button onclick="logout()">로그아웃</button>
 		</div>
 
 	<div id="nav-wrap" style="width:100%; display:flex; flex-direction:column">
@@ -41,6 +41,9 @@
 		$.ajax({
 			url : "menuInfo.do",
 			method:"POST",
+			data:{
+				"type":"nav",
+			},
 			dataType:"json",
 			success:function(result){
 				menuNavAjax_result_fn(result);

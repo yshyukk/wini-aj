@@ -88,6 +88,7 @@
 			 , mbr_type				<!-- 회원 구분 -->
 		FROM AJ_USER				<!-- 회원 테이블 -->
 		WHERE mbr_type != 3			<!-- 승인 대기중인 회원 제외 -->
+		AND use_yn = 'Y'
 		ORDER BY mbr_sn ASC
 	</select>
 	
@@ -95,6 +96,13 @@
 	<update id="user.mbrAuthorityUpdate" parameterClass="MbrVO">
         UPDATE AJ_USER 				<!-- 회원 테이블 -->
         SET mbr_type = #mbr_type#   <!-- 회원 구분 -->
+        WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
+	</update>
+	
+	<!-- 사용자 권한 관리 페이지 - 회원 삭제 -->
+	<update id="user.adminDelete" parameterClass="MbrVO">
+        UPDATE AJ_USER 				<!-- 회원 테이블 -->
+        SET use_yn = 'N'		   	<!-- Y/N 사용여부 -->
         WHERE mbr_sn = #mbr_sn#		<!-- 회원 번호 -->
 	</update>
 	

@@ -34,6 +34,7 @@
 		<button type="submit" id="back" onclick="location.href='/wini-aj/join.do'">회원가입</button>
 	</div>
 	<script>
+	/* 로그인 */
 	function mbrLogin() {	
 		
 		var mbr_id = $("#mbr_id").val();			// 아이디

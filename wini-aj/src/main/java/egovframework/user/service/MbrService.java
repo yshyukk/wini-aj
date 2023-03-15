@@ -34,5 +34,8 @@ public interface MbrService {
 	public List<MbrVO> mbrWaitList(MbrVO mbrVO) throws Exception;
 	
 	// 사용자 권한 관리 페이지 - 회원가입 승인
-	public void mbrWait(MbrVO mbrVO) throws Exception;
+	public void mbrPermission(MbrVO mbrVO) throws Exception;
+	
+	// 사용자 권한 관리 페이지 - 회원가입 거부
+	public void mbrRefusal(MbrVO mbrVO) throws Exception;
 }

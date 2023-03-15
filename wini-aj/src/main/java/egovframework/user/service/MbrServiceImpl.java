@@ -48,8 +48,8 @@ public class MbrServiceImpl implements MbrService{
 	// 회원가입 - 아이디 중복체크
 	@Override
 	public int idCheck(MbrVO mbrVO) throws Exception {
-		int result = (int) mbrDAO.select("user.idCheck", mbrVO);
-		return result;
+
+		return (int) mbrDAO.select("user.idCheck", mbrVO);
 	}
 
 	// 마이페이지 - 회원 조회
@@ -97,7 +97,13 @@ public class MbrServiceImpl implements MbrService{
 	
 	// 사용자 권한 관리 페이지 - 회원가입 승인
 	@Override
-	public void mbrWait(MbrVO mbrVO) throws Exception {
-		mbrDAO.update("user.mbrWait", mbrVO);	
+	public void mbrPermission(MbrVO mbrVO) throws Exception {
+		mbrDAO.update("user.mbrPermission", mbrVO);	
+	}
+	
+	// 사용자 권한 관리 페이지 - 회원가입 거부
+	@Override
+	public void mbrRefusal(MbrVO mbrVO) throws Exception {
+		mbrDAO.delete("user.mbrRefusal", mbrVO);	
 	}
 }

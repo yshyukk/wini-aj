@@ -65,6 +65,8 @@ function staticTable() {
 				text += "</table>";
 				
 				$("#tableStc").html(text);
+				var chart ="<canvas id='myChart'></canvas>";
+				$("#phchart").html(chart);
 			}
 		});
 }
@@ -95,6 +97,7 @@ function chart(use, repair, remain) {
 	    }
 	  }
 	});
+	
 }
 
 </script>

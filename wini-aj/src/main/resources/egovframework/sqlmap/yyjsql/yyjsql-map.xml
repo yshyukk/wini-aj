@@ -140,14 +140,14 @@
          , where_use                              			<!-- 사용장소 -->
          , repair_yn                              			<!--수리여부 -->
          , TO_CHAR(repair_dt, 'YYYY-MM-DD') AS repair_dt   	<!--수리입고일 -->
-         , repair_com_dt                           			<!--수리완료일 -->
+         , TO_CHAR(repair_com_dt, 'YYYY-MM-DD') AS repair_com_dt                           			<!--수리완료일 -->
       FROM AJ_EQUIP
       WHERE eqp_sn = #equipNum#
    </select>
    
    <!-- 장비 상세보기 수정 -->
    <update id="EquipDAO.updateEquip">
-      UPDATE AJ_EQUIPㅇ
+      UPDATE AJ_EQUIP
          SET
             eqp_code = #eqpCode#
             , eqp_nm = #eqpNm#

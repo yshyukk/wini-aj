@@ -280,7 +280,6 @@ $(function(){
 				}else{
 					lastpg = 3;
 				}
-				console.log(lastpg, pageNo);
 				
 				if(pageNo == 0) {
 					alert("첫 페이지 입니다.");
@@ -439,31 +438,40 @@ $(function(){
 }
 // 장비 수정(관리자용)
 	function updateEquip(eqpCode, equipNum) {
-		var sendData = {
-				equipNum : equipNum
-				, eqpCode : eqpCode
-				, eqpNm : $("#eqpNm").val()
-				, eqpNo : $("#eqpNo").val()
-				, regNm : $("#regNm").val()
-				, buyDt : $("#buyDt").val()
-				, buyPrice : $("#buyPrice").val()
-				, dstYn : $('input[name=dstyn]:checked').val()
-				, whereUse : $("#whereUse").val()
-				, repairYn : $('input[name=repairyn]:checked').val()
-				, repairDt : $("#repairDt").val()
-				, repairComDt : $("#repairComDt").val()
-		}
-		console.log(sendData);
-		$.ajax({
-			type : "post",
-			url : "./updateEquip.do",
-			data : sendData,
-			success:function(){
-				equipDetail(equipNum);
-				equipList(eqpCode);
-				alert("수정되었습니다.");
+		if($.trim($("#eqpNm").val()) == ""){
+			alert("장비명을 입력해주세요");
+		} else if($.trim($("#eqpNo").val()) == ""){
+			alert("장비 S/N을 입력해주세요");
+		} else if($.trim($("#regNm").val()) == ""){
+			alert("등록자를 입력해주세요");
+		}   else{
+			var sendData = {
+					equipNum : equipNum
+					, eqpCode : eqpCode
+					, eqpNm : $("#eqpNm").val()
+					, eqpNo : $("#eqpNo").val()
+					, regNm : $("#regNm").val()
+					, buyDt : $("#buyDt").val()
+					, buyPrice : $("#buyPrice").val()
+					, dstYn : $('input[name=dstyn]:checked').val()
+					, whereUse : $("#whereUse").val()
+					, repairYn : $('input[name=repairyn]:checked').val()
+					, repairDt : $("#repairDt").val()
+					, repairComDt : $("#repairComDt").val()
 			}
-		});
+			console.log(sendData);
+			$.ajax({
+				type : "post",
+				url : "./updateEquip.do",
+				data : sendData,
+				success:function(){
+					equipDetail(equipNum);
+					equipList(eqpCode, 1);
+					alert("수정되었습니다.");
+				}
+			});
+		}
+		
 	}
 
 // 장비 삭제 (관리자용)
@@ -476,7 +484,7 @@ $(function(){
 			url : "./deleteEquip.do",
 			data : sendData,
 			success:function(){
-				equipList(eqpCode);
+				equipList(eqpCode, 1);
 				addCancel(3);
 				alert("삭제되었습니다.");
 			}

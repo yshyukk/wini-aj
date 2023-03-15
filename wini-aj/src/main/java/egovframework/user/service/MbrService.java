@@ -30,6 +30,9 @@ public interface MbrService {
 	// 사용자 권한 관리 페이지 - 회원 권한 변경
 	public void mbrAuthorityUpdate(MbrVO mbrVO) throws Exception;
 	
+	// 사용자 권한 관리 페이지 - 회원 권한 탈퇴
+	public void adminDelete(MbrVO mbrVO) throws Exception;
+	
 	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 출력
 	public List<MbrVO> mbrWaitList(MbrVO mbrVO) throws Exception;
 	

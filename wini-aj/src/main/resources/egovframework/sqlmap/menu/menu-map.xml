@@ -20,6 +20,9 @@
 			,  MU_ID	<!-- 메뉴 level별 ID -->
 		FROM AJ_MENU
 		WHERE MU_ROLE <![CDATA[>=]]> #userRole# <!-- 메뉴권한과 접근권한을 비교 해서 메뉴 출력 -->
+		<isNotEmpty prepend="AND" property="type">
+			USE_YN = 'Y'
+		</isNotEmpty>
 		START WITH mu_ref IS NULL <!-- 참조(부모)값이 없는 컬럼(LEVEL =1)부터 계층 시작 -->
 		CONNECT BY PRIOR MU_ID = MU_REF	<!-- 부모 -> 자식 출력 순서 -->
 		ORDER SIBLINGS BY MU_ORDER, MU_NM	<!-- 계층별 순서 정렬 -->

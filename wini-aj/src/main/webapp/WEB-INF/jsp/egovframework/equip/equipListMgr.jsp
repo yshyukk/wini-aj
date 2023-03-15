@@ -146,7 +146,7 @@ $(function(){
 	}
 /* 장비 종류 수정 */
 	function updateType(typeNum){
-		if($.trim($("#addTypeNm").val()) == ""){
+		if($.trim($("#typeName"+typeNum).val()) == ""){
 			alert("종류명을 입력해주세요");
 		}else{
 			var sendData = {

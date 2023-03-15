@@ -73,7 +73,8 @@
 		                html+="<td><input type='radio' value='0' id='mbr_type_admin"+i+"' name='mbr_type"+i+"'>admin ";
 		                html+="<input type='radio' value='1' id='mbr_type_system"+i+"' name='mbr_type"+i+"'>시스템 관리자 ";
 		                html+="<input type='radio' value='2' id='mbr_type_general"+i+"' name='mbr_type"+i+"'>일반 사용자   ";
-		                html+="<button type='submit' onclick='mbrAuthority("+list[i].mbr_sn+", "+i+")'>변경</button></td>"
+		                html+="<button type='submit' onclick='mbrAuthority("+list[i].mbr_sn+", "+i+")'>변경</button>";
+		                html+="<button type='submit' onclick='mbrDelete("+list[i].mbr_sn+", "+i+")'>탈퇴</button></td>";
 		                html+="</tr>";	
 		            }
 		            $("#list").html(html) 
@@ -121,6 +122,27 @@
 		       		});
 		        }				
 			}			
+		}
+		
+		/* 회원 삭제 */
+		function mbrDelete(mbr_sn){				
+			var mbr = {mbr_sn : mbr_sn}
+		
+			if (confirm("회원을 삭제하시겠습니까?")) {		        
+	        	$.ajax({
+	       			type:'POST',
+	       			url:"./adminDelete.do",
+	       			data: mbr,
+	       			dataType : 'text',
+	       			success : function(data) {
+	       				mbrList();
+	       			},
+	       			error: function(){
+	       				alert("error");
+	       			}
+	       		});
+	        }				
+				
 		}
 		
 		/* 회원가입 승인 대기 리스트 */

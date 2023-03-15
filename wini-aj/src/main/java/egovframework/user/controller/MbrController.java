@@ -137,6 +137,14 @@ public class MbrController {
 		mbrService.mbrAuthorityUpdate(mbrVO);
 	}
 	
+	// 사용자 권한 관리 페이지 - 회원 탈퇴
+		@RequestMapping(value = "/adminDelete.do", method = RequestMethod.POST)
+		@ResponseBody
+		public void adminDelete(MbrVO mbrVO) throws Exception {
+			
+			mbrService.adminDelete(mbrVO);
+		}
+	
 	// 사용자 권한 관리 페이지 - 회원가입 승인 대기 리스트 출력
 	@RequestMapping(value ="/mbrWaitList.do", method = RequestMethod.POST)
 	@ResponseBody

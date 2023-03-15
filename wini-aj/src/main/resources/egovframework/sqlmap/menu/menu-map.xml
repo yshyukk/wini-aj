@@ -6,43 +6,43 @@
 	
 	<!-- 메뉴리스트 조회 -->
 	<select id="menu.getMenuInfo" resultClass="egovMap">
-		SELECT LEVEL
-			,  MU_SEQ
-			,  MU_NM
-			,  MU_ORDER
-			,  MU_DESC
-			,  USE_YN
-			,  REG_DT
-			,  MOD_DT
-			,  MU_ROLE
-			,  MU_REF
-			,  MU_URL
-			,  MU_ID
+		SELECT LEVEL	<!-- 계층 레벨 -->
+			,  MU_SEQ	<!-- 메뉴 PK -->
+			,  MU_NM	<!-- 메뉴 이름 -->
+			,  MU_ORDER	<!-- 메뉴 순서 -->
+			,  MU_DESC	<!-- 메뉴 설명 -->
+			,  USE_YN	<!-- 사용 여부 -->
+			,  REG_DT	<!-- 등록 일자 -->
+			,  MOD_DT	<!-- 수정 일자 -->
+			,  MU_ROLE	<!-- 메뉴 접근 권한 -->
+			,  MU_REF	<!-- 참조(부모) 메뉴 -->
+			,  MU_URL	<!-- 메뉴 주소 -->
+			,  MU_ID	<!-- 메뉴 level별 ID -->
 		FROM AJ_MENU
-		WHERE MU_ROLE <![CDATA[>=]]> #userRole#
-		START WITH mu_ref IS NULL
-		CONNECT BY PRIOR MU_ID = MU_REF
-		ORDER SIBLINGS BY MU_ORDER, MU_NM
+		WHERE MU_ROLE <![CDATA[>=]]> #userRole# <!-- 메뉴권한과 접근권한을 비교 해서 메뉴 출력 -->
+		START WITH mu_ref IS NULL <!-- 참조(부모)값이 없는 컬럼(LEVEL =1)부터 계층 시작 -->
+		CONNECT BY PRIOR MU_ID = MU_REF	<!-- 부모 -> 자식 출력 순서 -->
+		ORDER SIBLINGS BY MU_ORDER, MU_NM	<!-- 계층별 순서 정렬 -->
 	</select>
 	
 	
 	<!-- 단건조회 -->
-	
+
 	<select id="menu.muDetailInfo" resultClass="egovMap">
-		SELECT LEVEL
-			,  MU_SEQ
-			,  MU_NM 
-			,  MU_ORDER
-			,  MU_DESC
-			,  USE_YN
-			,  REG_DT
-			,  MOD_DT
-			,  MU_ROLE
-			,  MU_REF
-			,  MU_URL
-			,  MU_ID
+		SELECT LEVEL	<!-- 계층 레벨 -->
+			,  MU_SEQ	<!-- 메뉴 PK -->
+			,  MU_NM	<!-- 메뉴 이름 -->
+			,  MU_ORDER	<!-- 메뉴 순서 -->
+			,  MU_DESC	<!-- 메뉴 설명 -->
+			,  USE_YN	<!-- 사용 여부 -->
+			,  REG_DT	<!-- 등록 일자 -->
+			,  MOD_DT	<!-- 수정 일자 -->
+			,  MU_ROLE	<!-- 메뉴 접근 권한 -->
+			,  MU_REF	<!-- 참조(부모) 메뉴 -->
+			,  MU_URL	<!-- 메뉴 주소 -->
+			,  MU_ID	<!-- 메뉴 level별 ID -->
 		FROM AJ_MENU
-		WHERE MU_SEQ = #muSeq#
+		WHERE MU_SEQ = #muSeq# <!-- pk값으로 해당 메뉴의 정보 데이터 조회 -->
 		START WITH mu_ref IS NULL
 		CONNECT BY PRIOR MU_ID = MU_REF
 		ORDER SIBLINGS BY MU_ORDER
@@ -50,10 +50,11 @@
 	</select>
 	
 	<!-- 메뉴이름 중복체크 -->
+	<!-- 메뉴를 등록할 때 이미 등록된 메뉴 이름이 있는지 조회  -->
 	<select id="menu.checkInsMenu" resultClass="int">
 		SELECT COUNT(1)
 		FROM AJ_MENU
-		WHERE MU_NM = #muNm#
+		WHERE REPLACE(MU_NM,' ','') = #checkNm#	<!-- 메뉴 이름 -->
 	</select>
 	
 	
@@ -62,61 +63,69 @@
 		INSERT 
 		INTO  AJ_MENU
 			  (
-			 	MU_SEQ
-			 ,  MU_NM 
-		 	 ,  MU_ORDER
-			 ,  MU_DESC
-			 ,  USE_YN
-			 ,  REG_DT
-			 ,  MU_ROLE
-			 ,  MU_REF
-			 ,  MU_URL
-			 ,  MU_ID
+			 	MU_SEQ 	<!-- 메뉴 PK -->
+			 ,  MU_NM 	<!-- 메뉴 이름 -->
+		 	 ,  MU_ORDER <!-- 메뉴 순서 -->
+			 ,  MU_DESC  <!-- 메뉴 설명 -->
+			 ,  USE_YN	<!-- 사용 여부 -->
+			 ,  REG_DT	<!-- 등록 일자 -->
+			 ,  MU_ROLE <!-- 메뉴 권한 -->
+			 ,  MU_REF	<!-- 참조(부모) 메뉴 -->
+			 ,  MU_URL	<!-- 메뉴 주소 -->
+			 ,  MU_ID	<!-- 메뉴 level별 ID -->
 			 )
 			 VALUES
 			 (
-			    aj_mu_seq.NEXTVAL
-			  , #muNm#
-			  , #muOrder#
-			  , #muDesc#
-			  , #useYn#
-			  , SYSDATE
-			  , #muRole#
-			  , #muRef#
-			  , #muUrl#
-			  , #muId#
+			    aj_mu_seq.NEXTVAL	<!-- 메뉴PK 시퀀스 -->
+			  , #muNm#	<!-- 메뉴 이름 -->
+			  , #muOrder#	<!-- 메뉴 순서 -->
+			  , #muDesc#	<!-- 메뉴 설명 -->
+			  , #useYn#		<!-- 사용 여부 -->
+			  , SYSDATE		<!-- 등록 일자  -->
+			  , #muRole#	<!-- 메뉴 권한 -->
+			  , #muRef#		<!-- 참조(부모) 메뉴 -->
+			  , #muUrl#		<!-- 메뉴 주소 -->
+			  , #muId#		<!-- 메뉴 level별 ID -->
 			 )
 	</insert>
 	
-	<!-- 메뉴 수정 시 아이디 수정 여부 조회 -->
+	<!-- 수정 시 메뉴 이름 수정 여부 조회 -->
+	<!-- 다른 메뉴에서 이미 사용하고 있는 메뉴 이름이라면 이름이 중복되기 때문에 검사 -->
+	
 	<select id="menu.checkUpdMenuId" resultClass="int">
 		SELECT COUNT(1)
 		FROM AJ_MENU
-		WHERE MU_SEQ = #muSeq#
-		AND MU_NM = #muNm#
+		WHERE MU_SEQ != #muSeq#
+		AND REPLACE(MU_NM,' ','') = #checkNm#
 	</select>
+	
+	
 	<!-- 메뉴 UPDATE -->
 	
 	<update id="menu.updMenuInfo">
 		
 		UPDATE AJ_MENU
-		SET MU_NM = #muNm#
-		  , MU_ORDER = #muOrder#
-		  , MU_DESC = #muDesc#
-		  , USE_YN = #useYn#
-		  , MOD_DT = SYSDATE
-		  , MU_ROLE = #muRole#
-		  , MU_REF = #muRef#
-		  , MU_URL = #muUrl#
-		  , MU_ID = #muId#
-		WHERE MU_SEQ = #muSeq#
-		OR MU_REF = #muNm#
+		SET MU_NM = #muNm#	<!-- 메뉴 이름 -->
+		  , MU_ORDER = #muOrder#	<!-- 메뉴 순서 -->
+		  , MU_DESC = #muDesc#	<!-- 메뉴 설명 -->
+		  , USE_YN = #useYn#	<!-- 사용 여부 -->
+		  , MOD_DT = SYSDATE	<!-- 수정 일자 -->
+		  , MU_ROLE = #muRole#	<!-- 메뉴 권한 -->
+		  , MU_REF = #muRef#	<!-- 참조(부모) 메뉴 -->
+		  , MU_URL = #muUrl#	<!-- 메뉴 주소 -->
+		  , MU_ID = #muId#		<!-- 메뉴 level별 ID -->
+		WHERE MU_SEQ = #muSeq#	<!-- 메뉴 PK -->
+		
 	</update>
 	
+	
+	<!-- 하위 LEVEL 메뉴가 존재하는 지 여부  -->
+	<!-- 삭제 시  하위메뉴가 없는 경우만 삭제할 수 있도록  -->
 	<select id="menu.checkChildMenu" resultClass="int">
+	
 		SELECT COUNT(1)
 		FROM AJ_MENU
-		WHERE MU_REF = #muNm#
+		WHERE MU_REF = #muNm#	<!-- 메뉴 이름 -->
 	</select>
 	
 	<select id="menu.levelCheck">
@@ -132,7 +141,7 @@
 	
 	<delete id="menu.delMenuInfo">
 		DELETE AJ_MENU
-		WHERE MU_SEQ = #muSeq#
+		WHERE MU_SEQ = #muSeq#	<!-- 메뉴 PK -->
 	</delete>
 	
 </sqlMap>

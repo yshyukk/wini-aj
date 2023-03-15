@@ -34,10 +34,12 @@ public class MbrController {
 	public MbrVO mbrLogin(MbrVO mbrVO, HttpSession session) throws Exception {
 		
 		// 세션에 회원 번호, 권한 저장
+
 		session.setAttribute("mbr_sn", mbrService.mbrLogin(mbrVO).getMbr_sn());
 		session.setAttribute("mbr_type", mbrService.mbrLogin(mbrVO).getMbr_type()); 
 
 		return mbrService.mbrLogin(mbrVO);
+
 	}
 	
 	// 로그아웃

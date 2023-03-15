@@ -24,7 +24,7 @@
 		<input type="radio" value="F" id="mbr_gen" name="mbr_gen">여자
 		<input type="radio" value="M" id="mbr_gen" name="mbr_gen">남자
 	</div>
-	<div>전화번호 <input autocomplete="one-time-code" type="text" id="mbr_tel" name="mbr_tel"> '-'없이 숫자만 입력해 주세요.</div>
+	<div>전화번호 <input autocomplete="one-time-code" type="text" id="mbr_tel" name="mbr_tel"></div>
 	<div>이메일 <input autocomplete="one-time-code" type="text" id="mbr_email" name="mbr_email"></div>
 	<button type="submit" id="insert" onclick="mbrJoin()">등록</button>
 	<button type="submit" id="back" onclick="loginPage()">취소</button>
@@ -102,13 +102,13 @@
 		});
 	}
 	
-	/* 비밀번호 형식(공백 없이 영문, 숫자, 특수문자 포함 8~20자) */
+	/* 비밀번호 형식(공백 없이 영문, 숫자, 특수문자 포함 8~16자) */
 	function passwordCheck(password){
 		var num = password.search(/[0-9]/g);
 		var eng = password.search(/[a-z]/ig);
 		var spe = password.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
-	 	if(password.length < 8 || password.length > 20){
+	 	if(password.length < 8 || password.length > 16){
 		    return false;
 		}else if(password.search(/\s/) != -1){
 		    return false;

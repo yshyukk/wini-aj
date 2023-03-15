@@ -22,7 +22,7 @@
 			로그인중입니다.
 		</c:if>
 		<button onclick="location.href='myPage.do'">마이페이지</button>
-		<button onclick="location.href='mbrLogout.do'">로그아웃</button>
+		<button onclick="logout()">로그아웃</button>
 	</div>
 	
 	
@@ -128,7 +128,12 @@
 		location.href =   url;
 	}
 	
-
+	// 로그아웃
+	function logout(){
+		if (confirm("로그아웃 하시겠습니까?")){
+			location.href="mbrLogout.do"
+		}
+	}
 
 
 </script>

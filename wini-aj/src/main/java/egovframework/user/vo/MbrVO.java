@@ -8,15 +8,15 @@ import oracle.sql.DATE;
 
 public class MbrVO {
 
-	private int mbr_sn; 			// 회원 번호
-	private String mbr_id; 			// 아이디
-	private String password; 		// 비밀번호
-	private String mbr_nm; 			// 이름
-	private String mbr_gen;			// 성별
-	private String mbr_tel; 		// 번호
-	private String mbr_email; 		// 이메일
-	private int mbr_type; 			// 회원 구분
-	private String use_yn; 			// Y/N 사용여부
+	private int mbr_sn = 0; 			// 회원 번호
+	private String mbr_id = ""; 		// 아이디
+	private String password = ""; 		// 비밀번호
+	private String mbr_nm = ""; 		// 이름
+	private String mbr_gen = "";		// 성별
+	private String mbr_tel = ""; 		// 번호
+	private String mbr_email = ""; 		// 이메일
+	private int mbr_type = 0; 			// 회원 구분
+	private String use_yn = ""; 		// Y/N 사용여부
 	
 	public int getMbr_sn() {
 		return mbr_sn;

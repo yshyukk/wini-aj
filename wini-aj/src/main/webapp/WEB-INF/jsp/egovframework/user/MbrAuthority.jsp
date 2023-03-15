@@ -50,11 +50,10 @@
 	
 	<script>
 		$(document).ready(function () { 
-			mbrList(); 
-			mbrWaitList();
+			mbrList(); 			// 회원 리스트
+			mbrWaitList();		// 회원가입 승인 대기 리스트
 		});
 		
-		var type;
 		/* 회원 리스트 */
 		function mbrList() {
 			$.ajax({
@@ -96,9 +95,8 @@
 		}
 		
 		/* 회원 권한 변경 */
-		function mbrAuthority(mbr_sn, type){
-			
-			var authority = <%=(int)session.getAttribute("mbr_type")%>; 		// 세션에 저장된 권한
+		function mbrAuthority(mbr_sn, type){		
+			var authority = ${sessionScope.mbr_type}; 							// 세션에 저장된 권한
 			var mbr_type = $('input[name=mbr_type'+type+']:checked').val();		// 변경할 회원의 권한
 			
 			if (authority > mbr_type){
@@ -134,16 +132,19 @@
 		        success : function (waitList) {
 		        	var html = "";
 		        	
-		        	if(waitList.length == 0){ // 등록된 사원이 없을 때
+		        	if(waitList.length == 0){
 						html+="<td colspan='4'>대기중인 회원이 없습니다.</td>";
-		        		$("#waitList").html(html) // 생성한 테이블 삽입
+		        		$("#waitList").html(html)
 		        	}else{
 		        		for (var i = 0; i < waitList.length; i++) {
 			            	html+="<tr>";
 			                html+="<td>"+waitList[i].mbr_sn+"</td>";
 			                html+="<td>"+waitList[i].mbr_id+"</td>";
 			                html+="<td>"+waitList[i].mbr_nm+"</td>";
-			                html+="<td><button type='submit' onclick='mbrWait("+waitList[i].mbr_sn+")'>회원가입 승인</button></td>"
+			                html+="<td>";
+			                html+="<button type='submit' onclick='mbrPermission("+waitList[i].mbr_sn+")'>승인</button>"
+			                html+="<button type='submit' onclick='mbrRefusal("+waitList[i].mbr_sn+")'>거부</button>"
+			                html+="</td>"
 			                html+="</tr>";		                
 			            }
 			            $("#waitList").html(html)
@@ -156,14 +157,14 @@
 		}
 		
 		/* 회원가입 승인 */
-		function mbrWait(mbr_sn){			
-			var mbrUpdate = {mbr_sn : mbr_sn}
+		function mbrPermission(mbr_sn){			
+			var mbr = {mbr_sn : mbr_sn}
 			
 			if (confirm("회원가입을 승인하시겠습니까?")) {	     
 	        	$.ajax({
 	       			type:'POST',
 	       			url:"./mbrWait.do",
-	       			data: mbrUpdate,
+	       			data: mbr,
 	       			dataType : 'text',
 	       			success : function(data) {
 	       				mbrList();
@@ -174,6 +175,27 @@
 	       			}
 	       		});
 	        } 
+		}
+		
+		/* 회원가입 거부 */
+		function mbrRefusal(mbr_sn){
+			 var mbr = {mbr_sn : mbr_sn}
+			 
+			 if (confirm("회원가입을 거부하시겠습니까?")) {	     
+		        	$.ajax({
+		       			type:'POST',
+		       			url:"./mbrRefusal.do",
+		       			data: mbr,
+		       			dataType : 'text',
+		       			success : function(data) {
+		       				mbrList();
+		       				mbrWaitList();
+		       			},
+		       			error: function(){
+		       				alert("error");
+		       			}
+		       		});
+		        } 
 		}
 	</script>
 </body>

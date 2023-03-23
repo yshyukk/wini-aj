@@ -7,6 +7,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<!-- datePicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- 카카오 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<!-- 카카오 map -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2b908fa616650775b3754afb50078d28"></script>
+<!-- css -->
 <style>
 	li{width:fit-content}
 	input{width:200px}
@@ -16,7 +27,9 @@
 </style>
 </head>
 <body>
+
 <h3>메뉴관리</h3>
+
 <div id="wrapepr" style="display:inline-flex; justify-content:space-between; width:100%">
 	
 	<div id="menu-nav-wrap" style="width:30%;">
@@ -82,11 +95,11 @@
 	
 	</div>
 </div>
-
-
 </body>
 <script>
+
 	$(function(){
+	
 		listGrid();
 		
 		//페이지 로드 시  등록완료, 수정, 삭제버튼 안보이게 
@@ -95,7 +108,7 @@
 		$('#del_btn').hide();
 		
 	})
-	
+
 	/************메뉴 리스트 조회 AJAX************/
 	function listGrid(){
 		$.ajax({
@@ -147,30 +160,35 @@
 				//레벨을 시작할 때 <ul>태그 시작
 				appendTag += '<ul><li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm 
 						   +'<button class="li_toggle" value="b"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
-				if(menuList[i+1].level > 1){
+				if(menuList[i+1].level > 1) {
 					appendTag += '<ul>';
 				}else if(menuList[i+1].level == 1){
 					appendTag +='</ul>'
 				}
-			}else if(menuList[i].level > menuList[i+1].level){ //다음에 올 애가 상위LEVEL이면(부모)면
-				appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
-					       +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
+			}else{
+				if(menuList[i].level > menuList[i+1].level){ //다음에 올 애가 상위LEVEL이면(부모)면
+					appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
+						       +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
+					
+					//LEVEL만큼 <ul>태그 닫아주기
+					for(var j=1; j<= (menuList[i].level-menuList[i+1].level)+1; j++){
+						appendTag += '</ul>'
+					}
+					
+					if(menuList[i+1].level != 1){
+						appendTag += '<ul>'
+					}
+					
+				}else if(menuList[i].level < menuList[i+1].level){ //다음에 올 애가 하위LEVEL(자식)이면
+					//자식 <ul>태그 열어주기
+					appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
+							   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li><ul>';
+					
+				}else if(menuList[i].level == menuList[i+1].level ){ //다음에 올 애가 동일 LEVEL이면
 				
-				//LEVEL만큼 <ul>태그 닫아주기
-				for(var j=1; j<=menuList[i].level; j++){
-					appendTag += '</ul>'
+					appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
+							   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 				}
-				
-			}else if(menuList[i].level < menuList[i+1].level){ //다음에 올 애가 하위LEVEL(자식)이면
-				
-				//자식 <ul>태그 열어주기
-				appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
-						   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li><ul>';
-				
-			}else if(menuList[i].level == menuList[i+1].level ){ //다음에 올 애가 동일 LEVEL이면
-			
-				appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
-						   +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 			}
 		}
 		appendTag += '</div>';
@@ -387,7 +405,7 @@
 	  if(iud == "U")conf_word="수정";
 	  if(iud == "D")conf_word="삭제";
 	  
-	  /***등록버튼을 누르면 ***/
+	  /***버튼을 누르면 ***/
 	  if(confirm(conf_word +" 하시겠습니까?")){
 		
 		  //체크박스 체크 여부에 따라 저장할 데이터 변경하기 

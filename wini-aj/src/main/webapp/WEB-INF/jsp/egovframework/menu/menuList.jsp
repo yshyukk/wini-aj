@@ -133,14 +133,11 @@
 			// i+1번째가 없을 경우 (마지막 데이터 출력하는 조건)
 			if( menuList.length-1 == i){
 				
-				//level이 1이 아니면
 				if(menuList[i].level == menuList[i-1].level){ // 이전 레벨과 같은 레벨이면
-					appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
-									+'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq 
+					appendTag += '<li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm+'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq 
 									+'"><input type="hidden" name="m_level" value="'+ menuList[i].level +'"></li>';
 				}else if(menuList[i].level < menuList[i-1].level){ //이전 레벨보다 작으면(부모)
-					appendTag += '<ul><li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm
-							  +'<button class="li_toggle">a</button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'
+					appendTag += '<ul><li id="'+ menuList[i].muId + '" class="menu_li">'+menuList[i].muNm +'<button class="li_toggle"></button><input type="hidden" name="m_muSeq" value="'+ menuList[i].muSeq +'"><input type="hidden" name="m_level" value="'
 							  + menuList[i].level +'"></li>';
 				}else if(menuList[i].level > menuList[i-1].level){ // 이전 레벨보다 크면(자식)
 					
@@ -150,7 +147,7 @@
 							   + menuList[i].level +'"></li>';
 				}
 
-				for(var j=1; j<=menuList[i].level; j++){
+				for(var j=0; j<=menuList[i].level; j++){
 					appendTag += '</ul>'
 				}
 				break;

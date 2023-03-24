@@ -158,9 +158,8 @@
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 	<!-- END -->
 	
-	
 	<!-- INTERCEPTOR -->
-		<!-- 인터셉터 
+		<!-- 인터셉터 --> 
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" p:order="2">
 	    <property name="interceptors">
 	        <list>
@@ -168,26 +167,29 @@
 	        </list>
 	    </property>
 	</bean>
-	
 
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/"/>
 			<mvc:mapping path="/**/*.do"/>
 			<mvc:exclude-mapping path="/login.do"/> 
+			<mvc:exclude-mapping path="/mbrLogout.do"/>
 			<bean class="egovframework.aj.common.interceptor.MenuInterceptor"/>
 		</mvc:interceptor>
 		
 	<mvc:interceptor>
 			<mvc:mapping path="/"/>
+			<mvc:mapping path="/**/*.do"/>
 			<mvc:mapping path="/**/*List.do"/>
+			<mvc:exclude-mapping path="/mbrLogin.do"/>			
+			<mvc:exclude-mapping path="/main.do"/>
 			<mvc:exclude-mapping path="/login.do"/>
-			<mvc:exclude-mapping path="/main.do"/> 
+			<mvc:exclude-mapping path="/mbrLogout.do"/>
 			 
 			<bean class="egovframework.aj.common.interceptor.RoleInterceptor"/>
-		</mvc:interceptor> 
+	</mvc:interceptor> 
 		
-	</mvc:interceptors>-->
+	</mvc:interceptors>
 	
 	
 	<bean id="menuInterceptor" class="egovframework.aj.common.interceptor.MenuInterceptor"/>

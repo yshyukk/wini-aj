@@ -47,12 +47,16 @@
 			},
 			dataType:"json",
 			success:function(result){
+				console.log(result)
 				menuNavAjax_result_fn(result);
 				
 			}
 		})
 	}
 	/********* 메뉴 리스트 조회 ***************/
+	
+	var levelArr=[];
+	
 	function menuNavAjax_result_fn(menuInfo){
 		var menuList = menuInfo.menuList;
 		
@@ -66,15 +70,15 @@
 				
 				if(menuList[i].level == menuList[i-1].level){ // 이전 레벨과 같은 레벨이면
 					
-					appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +')">'+ menuList[i].muNm+'</li>';
+					appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'"+',' + menuList[i].muRole +')">'+ menuList[i].muNm+'</li>';
 				
 				}else if(menuList[i].level < menuList[i-1].level){ //이전 레벨보다 작으면(부모)
 				
-					appendTag += '<ul class="nav_ul '+ menuList[i].level +'"><li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +')">'+menuList[i].muNm +'</li>';
+					appendTag += '<ul class="nav_ul '+ menuList[i].level +'"><li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +','+ menuList[i].muRole +')">'+menuList[i].muNm +'</li>';
 				
 				}else if(menuList[i].level > menuList[i-1].level){ // 이전 레벨보다 크면(자식)
 					
-					appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +')">'+menuList[i].muNm+'</li>';
+					appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'"+',' + menuList[i].muRole +')">'+menuList[i].muNm+'</li>';
 				}
 	
 				for(var j=0; j<=menuList[i].level; j++){
@@ -85,7 +89,7 @@
 			// 다음에 올 값과 비교해서 그리기
 			if(menuList[i].level == 1){
 				//레벨을 시작할 때 <ul>태그 시작
-				appendTag += '<ul class="nav_ul '+ menuList[i].level +'"><li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +')">'+menuList[i].muNm +'</li>';
+				appendTag += '<ul class="nav_ul '+ menuList[i].level +'"><li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'"+',' + menuList[i].muRole +')">'+menuList[i].muNm +'</li>';
 				
 				if(menuList[i+1].level > 1){
 					appendTag += '<ul class="nav_ul '+ menuList[i+1].level +'">';
@@ -93,7 +97,7 @@
 					appendTag +='</ul>'
 				}
 			}else if(menuList[i].level > menuList[i+1].level){ //다음에 올 애가 부모면
-				appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" +')">'+menuList[i].muNm+'</li>';
+				appendTag += '<li class="nav_li" onclick="move_page('+ "\'"+menuList[i].muUrl+"\'" + ',' + menuList[i].muRole +')">'+menuList[i].muNm+'</li>';
 				
 				//LEVEL만큼 <ul>태그 닫아주기
 				for(var j=1; j <= menuList[i].level; j++){
@@ -103,11 +107,11 @@
 			}else if(menuList[i].level < menuList[i+1].level){ //다음에 올 애가 자식이면
 				
 				//자식 <ul>태그 열어주기
-				appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].level+')">'+menuList[i].muNm+'</li><ul class="nav_ul '+ menuList[i+1].level +'">';
+				appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" + ',' + menuList[i].muRole +')">'+menuList[i].muNm+'</li><ul class="nav_ul '+ menuList[i+1].level +'">';
 				
 			}else if(menuList[i].level == menuList[i+1].level ){
 			
-				appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].level+')">'+menuList[i].muNm+'</li>';
+				appendTag += '<li class="nav_li" onclick="move_page('+"\'"+menuList[i].muUrl+"\'" +','+menuList[i].muRole+')">'+menuList[i].muNm+'</li>';
 				
 			}
 			menuLevel.push(menuList[i].level)
@@ -121,7 +125,7 @@
 		//Set객체를 이용해 중복제거 menulevel중복제거
 		const set = new Set(menuLevel);
 		//... : 전개연산자
-		const levelArr = [...set];
+		levelArr = [...set];
 		
 		for(var i=1; i < levelArr.length; i++){
 			
@@ -131,30 +135,44 @@
 	}
 	
 	$(document).on("mouseover",".nav_li",function(){
-		let target = $(this).parent();
-		let hideTarget = target.next();
-		
-		console.log(hideTarget)
-		hideTarget.slideDown();
-		
+		var hTarget = $(this).siblings('.nav_ul');
+		hTarget.slideDown();
 	})
 	
-	/*$(document).on("click",".nav_li",function(){
+	
+	 $(document).on("click",".nav_ul",function(){
 		let target = $(this).parent();
 		let targetP = target.parent();
 		let hideTarget = target.find('ul');
+				
+		var hTarget = $(this).children('.nav_ul');
+		hTarget.slideUp();
 		
-		hideTarget.toggle();
-		
-	})*/
+	}) 
 	
-	function move_page(url){
+	function move_page(url, muRole){
 		//url값이 null이면 현재페이지 유지
 		if(url == 'null'){
 			url ='#';
+			location.href = url;
 		}
 		
-		location.href = url;
+		$.ajax({
+			url : url,
+			method:"POST",
+			data:{
+				"type":"nav",
+				"muRole": muRole
+			},
+			dataType:"json",
+			success:function(result){
+				console.log(result)
+				menuNavAjax_result_fn(result);
+				
+			}
+		})
+		
+		
 	}
 	
 	// 로그아웃

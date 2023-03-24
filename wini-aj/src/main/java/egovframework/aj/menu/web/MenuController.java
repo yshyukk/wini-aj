@@ -64,6 +64,7 @@ public class MenuController {
 		
 		commandMap.put("userRole", userRole);
 		//유저권한과 메뉴접근 권한을 비교해 메뉴 list 조회
+		
 		Map<String,Object> menuInfo = mService.getMenuInfo(commandMap);
 		
 		return menuInfo;

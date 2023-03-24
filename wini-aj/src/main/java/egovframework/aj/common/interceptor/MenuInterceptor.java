@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import egovframework.aj.menu.service.MenuService;
 
 public class MenuInterceptor extends WebContentInterceptor{
@@ -33,23 +35,27 @@ public class MenuInterceptor extends WebContentInterceptor{
 		  
 		  //로그인 시 session에 저장한 사용자 권한 값을 가져와서 int userRole = (int)
 		  int userRole = (int) session.getAttribute("mbr_type");
-
+		  
+		  System.out.println("POST!!!!RUN!!!!");
 		  HashMap<String,Object> commandMap = new HashMap<>();
 		  
 		  commandMap.put("userRole", userRole);
 		  
-		  System.out.println("post:::"+commandMap.get("userRole"));
-		 
 		  Map<String,Object> menuInfo = mService.getMenuInfo(commandMap);
 		  
-		  modelAndView.addObject("menuInfo", menuInfo); //
-			/*
-			 * modelAndView.addObject("menuList", menuList); //
-			 * modelAndView.addObject("userRole", userRole);
-			 */
+		  /*
+		   * objectMapper
+		   *  : JSON <-> java Object 해주는 Jackson 라이브러리의 클래스 
+		   */
+		  ObjectMapper objMapper = new ObjectMapper();
+		  // map을 jsson으로 parsing해서
+		  String jsonResult = objMapper.writeValueAsString(menuInfo);
+		  //ajax로 결과를 보낼때 contentType과 그려줄 String을 매핑해서 보내줌
+
+		  response.setContentType("application/json;charset=UTF-8");
 		  
-		 // response.sendRedirect("/mainPage.do"); // 만약에 GetOutputStram() 어저구 오류가 나면
-		 // Interceptor 건드릴것
-		 	}
+		  response.getWriter().write(jsonResult);
+		  
+ 	}
 	
 }

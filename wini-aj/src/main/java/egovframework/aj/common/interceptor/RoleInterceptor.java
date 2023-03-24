@@ -20,26 +20,37 @@ import egovframework.aj.menu.service.MenuService;
  */
 public class RoleInterceptor extends WebContentInterceptor{
 	
-	/*
-	 * @Autowired MenuService mService;
-	 * 
-	 * @Override public boolean preHandle(HttpServletRequest request,
-	 * HttpServletResponse response, Object handler) throws ServletException {
-	 * System.out.println("preRun");
-	 * 
-	 * try { request.setCharacterEncoding("UTF-8"); } catch
-	 * (UnsupportedEncodingException e) { e.printStackTrace(); }
-	 * 
-	 * HttpSession session = request.getSession();
-	 * 
-	 * int userRole = (int) session.getAttribute("mbr_type");
-	 * 
-	 * if(userRole < 3) { System.out.println("run"); return true; }else { try {
-	 * response.sendRedirect("/main.do"); } catch (IOException e) {
-	 * e.printStackTrace(); } return false;
-	 * 
-	 * } }
-	 */
+	
+	  @Autowired MenuService mService;
+	  
+	  @Override public boolean preHandle(HttpServletRequest request,
+	  HttpServletResponse response, Object handler) throws ServletException {
+	  System.out.println("preRun");
+	  
+	  //int muRole = Integer.parseInt(request.getParameter("muRole")); 
+	  
+	  try { 
+		  request.setCharacterEncoding("UTF-8"); 
+	  } catch(UnsupportedEncodingException e) {
+		  e.printStackTrace(); 
+	  }
+	  
+	  HttpSession session = request.getSession();
+	  
+	  int userRole = (int) session.getAttribute("mbr_type");
+	  System.out.println("userRole::::"+userRole);
+	  if(userRole < 3) {
+		  System.out.println("run"); 
+		  return true; 
+	  }else { 
+		  try {
+			  response.sendRedirect("/err/roleErr"); 
+		  } catch (IOException e) {
+			  	e.printStackTrace(); } return false;
+	  
+	  	  } 
+	  }
+	 
 //	@Autowired
 //	UserService userService;
 //	
